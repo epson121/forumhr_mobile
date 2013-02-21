@@ -1,0 +1,9 @@
+package com.example.fhr.adapters;
+
+import android.widget.BaseExpandableListAdapter;
+
+public class ThreadListAdapter extends BaseExpandableListAdapter{
+	
+	
+
+}

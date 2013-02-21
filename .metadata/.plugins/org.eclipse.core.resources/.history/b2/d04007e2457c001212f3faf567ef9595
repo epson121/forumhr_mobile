@@ -1,0 +1,13 @@
+package com.example.fhr;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+
+public class BaseDialogActivity extends Activity {
+
+	int DIALOG_THREAD = 1;
+	int DIALOG_TOPIC = 2;
+	
+	AlertDialog alertDialog;
+	
+}

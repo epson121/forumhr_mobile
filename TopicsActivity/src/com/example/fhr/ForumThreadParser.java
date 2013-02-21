@@ -1,7 +1,5 @@
 package com.example.fhr;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
