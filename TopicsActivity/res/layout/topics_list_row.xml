@@ -60,14 +60,6 @@
         android:textStyle="bold"
         android:typeface="sans" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/topic_name"
-        android:layout_toRightOf="@+id/topic_name"
-        android:background="#000000" >
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/topic_options"
         android:layout_width="35dip"

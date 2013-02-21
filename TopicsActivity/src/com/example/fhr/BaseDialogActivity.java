@@ -3,6 +3,7 @@ package com.example.fhr;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.zip.Inflater;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,12 +11,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class BaseDialogActivity extends Activity {
 
-	int DIALOG_THREAD = 1;
-	int DIALOG_TOPIC = 2;
 	HashMap<String, String> hm;
 	String[] urls;
 	Context con;
@@ -44,11 +46,16 @@ public class BaseDialogActivity extends Activity {
 	
 	AlertDialog alertDialog;
 	
-	protected Dialog onCreateDialog(int id, ForumTopic ft){
-		hm = ft.subTopics;
+	/*
+	 * 1 - Thread subtopics dialog
+	 * 2 - Topic "go to page" dialog
+	 * 3 - "An error has occured dialog"
+	 */
+	protected Dialog onCreateDialog(int id, ForumTopic ft, final int maxNumPages){
+		if (ft != null)
+			hm = ft.subTopics;
 		AlertDialog.Builder builder = new AlertDialog.Builder(con);
-		
-		
+
 		switch(id){
 		case 1:
 			builder
@@ -58,7 +65,6 @@ public class BaseDialogActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					String url = urls[which];
-					//Toast.makeText(con, url, Toast.LENGTH_SHORT).show();
 					Intent threadsActivity = new Intent("android.intent.action.FHR.THREAD.ACTIVITY");
 					threadsActivity.putExtra("topicUrl", url);
 					threadsActivity.putExtra("topicName", createThreadDialogList()[which]);	
@@ -71,7 +77,33 @@ public class BaseDialogActivity extends Activity {
                     dialog.dismiss();
                 }
             });
-        return builder.create();
+			return builder.create();
+		
+		case 2:
+			LayoutInflater inflater = ((Activity) con).getLayoutInflater();
+			
+			View addNumber = inflater.inflate(R.layout.dialog_go_to_page, null);
+
+	        final EditText pNum = (EditText) addNumber.findViewById(R.id.page_number);
+			builder
+			.setTitle("Go to page (1 - " + maxNumPages + ") :")
+			.setView(addNumber)
+			.setPositiveButton("Go", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					int pn = Integer.parseInt(pNum.getText().toString());
+					if (pn > maxNumPages || pn < 1){
+						Toast.makeText(con, "Nonexisting page. Try again.", Toast.LENGTH_SHORT).show();
+					}
+					else{
+						Toast.makeText(con, "Going to page: " + pn, Toast.LENGTH_SHORT).show();
+					}
+				}
+			})
+			.setCancelable(true);
+			return builder.create();
 		default:
 			return null;	
 		}

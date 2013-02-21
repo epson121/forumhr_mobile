@@ -11,9 +11,21 @@ public class ForumThreadParser {
 	private Document doc;
 	private Elements  threadList;
 	
-	public ForumThreadParser(String url) throws IOException{
-		doc = Jsoup.connect(url).get();
-		threadList = doc.getElementById("threadslist").getElementsByTag("tr");
+	public ForumThreadParser(String url){
+		try{
+			doc = Jsoup.connect(url).get();
+			Element th_list = doc.getElementById("threadslist");
+			if (th_list == null){
+				doc = Jsoup.connect(url + "&iframed=1#").get();
+				threadList = doc.getElementById("threadslist").getElementsByTag("tr");
+			}
+			else{
+				threadList = th_list.getElementsByTag("tr");
+			}
+		}
+		catch(IOException e){
+			System.out.println("An error has occured");
+		}
 	}
 	
 	public int getCount(){

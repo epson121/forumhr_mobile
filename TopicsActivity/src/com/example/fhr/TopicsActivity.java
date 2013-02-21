@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TopicsActivity extends Activity {
 	
@@ -107,16 +105,13 @@ public class TopicsActivity extends Activity {
 				}
 			});
 			
-			
-			
-			
 			subImage.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
 					
 					bda = new BaseDialogActivity(TopicsActivity.this);
-					AlertDialog adialog = (AlertDialog) bda.onCreateDialog(1, forumTopicList[pos]);
+					AlertDialog adialog = (AlertDialog) bda.onCreateDialog(1, forumTopicList[pos], 0);
 					adialog.show(); 
 				}
 				

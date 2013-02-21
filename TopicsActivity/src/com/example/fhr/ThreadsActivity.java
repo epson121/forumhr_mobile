@@ -1,13 +1,16 @@
 package com.example.fhr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,7 @@ public class ThreadsActivity extends Activity {
 	protected ForumThreadParser fthp;
 	protected ForumThread[] fth;
 	protected int count;
+	private BaseDialogActivity bda;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +48,18 @@ public class ThreadsActivity extends Activity {
 				count = fthp.getCount();
 			} 
 			catch (Exception e) {
-				Toast.makeText(getApplicationContext(), "Error. Please try again.", Toast.LENGTH_SHORT).show();
+				return "";
 			}
-			return "";
+			return "ok";
 		}
 		
 		@Override
 		protected void onPostExecute(String result) {
-			threadList.setAdapter(new ThreadAdapter());
+			if (result.equals("ok"))
+				threadList.setAdapter(new ThreadAdapter());
+			else{
+				//generate error alert dialog
+			}
 		}
 		
 	}
@@ -73,6 +81,7 @@ public class ThreadsActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v = convertView;
+			final int pos = position;
 			if (v == null){
 				LayoutInflater li = getLayoutInflater();
 				v = li.inflate(R.layout.threads_list_row, null);
@@ -82,9 +91,10 @@ public class ThreadsActivity extends Activity {
 			TextView threadName = (TextView) v.findViewById(R.id.thread_name);
 			TextView threadAuthor = (TextView) v.findViewById(R.id.thread_author);
 			TextView threadLastPostInfo = (TextView) v.findViewById(R.id.thread_last_post_info);
-			//ImageButton goToPage = (ImageButton) findViewById(R.id.thread_go_to_page);
+			ImageButton goToPage = (ImageButton) v.findViewById(R.id.thread_go_to_page);
+			
 			//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
-			Log.d("APP", "Position; " + position);
+
 			if (fth[position].isTop)
 				threadName.setText("* " + fth[position].threadName);
 			else
@@ -92,6 +102,18 @@ public class ThreadsActivity extends Activity {
 			threadAuthor.setText(fth[position].threadAuthor);
 			threadLastPostInfo.setText(fth[position].lastPostInfo);
 
+			
+			goToPage.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					bda = new BaseDialogActivity(ThreadsActivity.this);
+					AlertDialog dialog = (AlertDialog) bda.onCreateDialog(2, null, fth[pos].numOfPages);
+					dialog.show();
+					//Toast.makeText(getApplicationContext(), "text", Toast.LENGTH_SHORT).show();
+				}
+			});
+			
 			return v;
 		}
 	}

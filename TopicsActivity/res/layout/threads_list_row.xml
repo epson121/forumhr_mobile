@@ -77,22 +77,11 @@
          android:id="@+id/thread_go_to_page"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignParentRight="true"
-         android:layout_marginRight="5dp"
-         android:layout_alignTop="@+id/thread_name"
-         android:background="@null"
-         android:contentDescription="@string/description"
-         android:src="@drawable/thread_arrow_bw_small" 
-         />
-
-     <ImageButton
-         android:id="@+id/thread_favorite"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
          android:layout_alignBottom="@+id/thread_last_post_info"
-         android:layout_alignRight="@+id/thread_go_to_page"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentTop="true"
          android:background="@null"
          android:contentDescription="@string/description"
-         android:src="@drawable/star_icon_empty" />
+         android:src="@drawable/thread_arrow_bw_small" />
 
 </RelativeLayout>
