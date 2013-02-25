@@ -1,0 +1,26 @@
+package com.example.fhr;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class PostsActivity extends Activity {
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		String threadName, threadUri, threadNumOfPages;
+		
+		Bundle b = getIntent().getExtras();
+		threadName = b.getString("threadName");
+		threadUri = b.getString("threadName");
+		threadNumOfPages = b.getString("threadNumOfPages");
+		
+		setContentView(R.layout.post_list_row);
+		
+		TextView username = (TextView) findViewById(R.id.post_username_text);
+		TextView date = (TextView) findViewById(R.id.post_date_text);
+	}
+
+}

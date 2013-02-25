@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:padding="5dip"
+    >
+
+    <LinearLayout
+        android:layout_width="270dp"
+        android:layout_height="wrap_content">
+    
+	    <LinearLayout android:id="@+id/thumbnail"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:padding="3dip"
+	        android:layout_alignParentLeft="true"
+	        android:background="#FFFFFF"
+	        android:layout_marginRight="5dip"
+	    	>
+	        
+	         <ImageView
+	            android:id="@+id/thread_icon"
+	            android:layout_width="35dip"
+	            android:layout_height="35dip"
+	            android:contentDescription="@+string/description"
+	            android:src="@drawable/thread_icon_bw" 
+	            />    
+	        
+	    </LinearLayout>
+	    
+    
+
+    <!-- subtopics -->
+   	 <LinearLayout >
+
+	    <TextView
+	        android:id="@+id/thread_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="25dp"
+	        android:layout_marginTop="5dp"
+	        android:background="@drawable/textview_selector"
+	        android:clickable="true"
+	        android:text="@+string/thread_name"
+	        android:textColor="#040404"
+	        android:textSize="13sp"
+	        android:textStyle="bold"
+	        android:typeface="sans" />
+
+	    <TextView
+	        android:id="@+id/thread_author"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="1dip"
+	        android:background="@drawable/textview_selector"
+	        android:text="@+string/thread_author"
+	        android:textColor="#343434"
+	        android:textSize="9sp" />
+	
+	     <TextView
+	         android:id="@+id/thread_last_post_info"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:layout_alignLeft="@+id/thumbnail"
+	         android:layout_alignRight="@+id/thread_name"
+	         android:layout_below="@+id/thread_author"
+	         android:layout_marginTop="3dp"
+	         android:background="@drawable/textview_selector"
+	         android:text="@+string/thread_last_post_info"
+	         android:textColor="#343434"
+	         android:textSize="9sp" />
+	     </LinearLayout>
+
+     </LinearLayout>
+     
+     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent" >
+
+	     <ImageButton
+	         android:id="@+id/thread_go_to_page"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:layout_alignBottom="@+id/thread_last_post_info"
+	         android:layout_alignParentRight="true"
+	         android:layout_alignParentTop="true"
+	         android:background="@null"
+	         android:contentDescription="@string/description"
+	         android:src="@drawable/thread_arrow_bw_small" />
+	</LinearLayout>
+</RelativeLayout>

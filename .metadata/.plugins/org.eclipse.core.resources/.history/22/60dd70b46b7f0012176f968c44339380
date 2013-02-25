@@ -1,0 +1,94 @@
+package com.example.fhr;
+
+
+import java.io.IOException;
+
+import com.example.fhr.ThreadsActivity.ThreadAdapter;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+public class PostsActivity extends Activity {
+	
+	private ForumPostParser fpp;
+	private ForumPost[] fpl;
+	private int count;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		String threadName, threadUri, threadNumOfPages;
+		
+		Bundle b = getIntent().getExtras();
+		threadName = b.getString("threadName");
+		threadUri = b.getString("threadName");
+		threadNumOfPages = b.getString("threadNumOfPages");
+		
+		setContentView(R.layout.post_list_row);
+		
+		TextView username = (TextView) findViewById(R.id.post_username_text);
+		TextView date = (TextView) findViewById(R.id.post_date_text);
+		
+		username.setText("USERNAME");
+		date.setText("DATE!!!!!");
+		
+		new Async().execute(threadUri);	
+	}
+	
+	private class Async extends AsyncTask<String, Void, String>{
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				fpp = new ForumPostParser(params[0]);
+				fpl = fpp.getPostList();
+				count = fpp.getSize();
+				return "ok";
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			return "error";
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if (result.equals("ok")){
+				//post adapter
+			}
+		}
+	}
+	
+	
+	private class PostAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			return count;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return position;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int arg0, View arg1, ViewGroup arg2) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
+
+}

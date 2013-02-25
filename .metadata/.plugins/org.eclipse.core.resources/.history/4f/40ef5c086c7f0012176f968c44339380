@@ -1,0 +1,107 @@
+package com.example.fhr;
+
+
+import java.io.IOException;
+
+import com.example.fhr.ThreadsActivity.ThreadAdapter;
+
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+public class PostsActivity extends Activity {
+	
+	private ForumPostParser fpp;
+	private ForumPost[] fpl;
+	private int count;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		Bundle b = getIntent().getExtras();
+		String threadName = b.getString("threadName");
+		String threadUri = b.getString("threadName");
+		String threadNumOfPages = b.getString("threadNumOfPages");
+		
+		setContentView(R.layout.post_list_row);
+		new Async().execute(threadUri);	
+	}
+	
+	private class Async extends AsyncTask<String, Void, String>{
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				fpp = new ForumPostParser(params[0]);
+				fpl = fpp.getPostList();
+				count = fpp.getSize();
+				return "ok";
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			return "error";
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if (result.equals("ok")){
+				//post adapter
+			}
+		}
+	}
+	
+	
+	private class PostAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			return count;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return position;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View v = convertView;
+			final int pos = position;
+			if (v == null){
+				LayoutInflater li = getLayoutInflater();
+				v = li.inflate(R.layout.post_list_row, null);
+				Log.d("APP", "THREAD new inflation");
+			}
+			
+			TextView postUsername = (TextView) v.findViewById(R.id.);
+			TextView postDate = (TextView) v.findViewById(R.id.thread_author);
+			TextView threadLastPostInfo = (TextView) v.findViewById(R.id.thread_last_post_info);
+			ImageButton goToPage = (ImageButton) v.findViewById(R.id.thread_go_to_page);
+			
+			//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
+
+			if (fth[position].isTop)
+				threadName.setText("TOP " + fth[position].threadName);
+			else
+				threadName.setText(fth[position].threadName);
+			threadAuthor.setText(fth[position].threadAuthor);
+			threadLastPostInfo.setText(fth[position].lastPostInfo);
+		}
+		
+	}
+
+}

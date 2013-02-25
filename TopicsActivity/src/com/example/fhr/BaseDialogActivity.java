@@ -3,8 +3,6 @@ package com.example.fhr;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.zip.Inflater;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -92,7 +90,7 @@ public class BaseDialogActivity extends Activity {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-
+					//check for exceptions !!!
 					int pn = Integer.parseInt(pNum.getText().toString());
 					if (pn > maxNumPages || pn < 1){
 						Toast.makeText(con, "Nonexisting page. Try again.", Toast.LENGTH_SHORT).show();
@@ -104,6 +102,10 @@ public class BaseDialogActivity extends Activity {
 			})
 			.setCancelable(true);
 			return builder.create();
+		case 3:
+			
+			
+			
 		default:
 			return null;	
 		}

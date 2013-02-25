@@ -1,0 +1,19 @@
+package components;
+
+import android.app.Dialog;
+import android.content.Context;
+
+public class ProgressDialog extends Dialog {
+
+	public Context mContext;
+	
+	public ProgressDialog(Context context) {
+		super(context);
+		mContext = context;
+	}
+	
+	
+
+	
+	
+}

@@ -2,10 +2,14 @@ package com.example.fhr;
 
 import java.io.IOException;
 
+import org.apache.http.client.HttpResponseException;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TopicsActivity extends Activity {
@@ -30,11 +35,28 @@ public class TopicsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_topic);
 		topicList = (ListView) findViewById(R.id.topics_feed);
-		new Async().execute("");	
+		new Async(TopicsActivity.this).execute("");	
 	}
 
 	private class Async extends AsyncTask<String, Void, String>{
+		
+		private ProgressDialog progressDialog;
 
+		private Activity act;
+		private Context con;
+		public Async(Activity a) {
+			this.act = a;
+			con = this.act;
+			progressDialog = new ProgressDialog(con);
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog.setMessage("Loading..");
+			progressDialog.show();
+		}
+		
 		@Override
 		protected String doInBackground(String... params) {
 			 try {                                              
@@ -42,21 +64,27 @@ public class TopicsActivity extends Activity {
 	        	forumTopicList = ftp.getTopicList();
 	        	count = ftp.getCount();
 	        } 
+			catch(HttpResponseException e){
+				Intent threadsActivity = new Intent(getApplicationContext(), TopicsActivity.class);
+				startActivity(threadsActivity);
+			}
 			catch (IOException e) {                          
 	            e.printStackTrace();                           
-	        }           
+	        }       
 			return "";
 		}
 		
 		@Override
 		protected void onPostExecute(String result) {
-			topicList.setAdapter(new ImageAdapter());
+			ImageAdapter adapter = new ImageAdapter();
+			adapter.notifyDataSetChanged();
+			topicList.setAdapter(adapter);
 			
-		}
-		
+			if (progressDialog.isShowing()) {
+	            progressDialog.dismiss();
+	        }
+		}	
 	}
-	
-
 	public class ImageAdapter extends BaseAdapter {
 		
         public int getCount(){   	
@@ -70,17 +98,43 @@ public class TopicsActivity extends Activity {
         public long getItemId(int position) {
             return position;
         }
-  
+        
+        @Override
+        public int getItemViewType(int position) {
+         // Define a way to determine which layout to use, here it's just evens and odds.
+        	if (forumTopicList[position].subTopics.isEmpty()){
+				return 0;
+			}
+        	else{
+        		return 1;
+        	}
+        }
+
+        @Override
+        public int getViewTypeCount() {
+         return 2; // Count of different layouts
+        }
+ 
+        //notify set changed
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View v = convertView;
 			final int pos = position;
+			View v = convertView;
+			LayoutInflater li;
 			Log.d("APP", "Point_getView and position: " +  position + " , and count " + count );
-			//if (v == null){
-				LayoutInflater li = getLayoutInflater();
-				v = li.inflate(R.layout.topics_list_row, null);
+			if (convertView == null){
+				if (getItemViewType(position) == 0){
+					li = getLayoutInflater();
+					v = li.inflate(R.layout.topics_list_row_no_subtopics, null);
+					Log.d("APP", "Inflation 1");
+				}
+				else{
+					li = getLayoutInflater();
+					v = li.inflate(R.layout.topics_list_row_with_subtopics, null);
+					Log.d("APP", "Inflation 2");
+				}
 				Log.d("APP", "new inflation");
-			//}
+			}
 			
 			TextView tName = (TextView) v.findViewById(R.id.topic_name);
 			TextView tDesc = (TextView) v.findViewById(R.id.topic_description);
@@ -88,14 +142,8 @@ public class TopicsActivity extends Activity {
 			
 			tName.setText(forumTopicList[position].name.replace("&amp;", "&"));
 			tDesc.setText(forumTopicList[position].description);	
-			
-			
-			if (!forumTopicList[position].subTopics.isEmpty()){
-				subImage.setVisibility(1);
-			}
-			
+
 			tName.setOnClickListener(new OnClickListener() {
-				
 				@Override
 				public void onClick(View arg0) {
 						Intent threadsActivity = new Intent("android.intent.action.FHR.THREAD.ACTIVITY");
@@ -105,23 +153,17 @@ public class TopicsActivity extends Activity {
 				}
 			});
 			
-			subImage.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					
-					bda = new BaseDialogActivity(TopicsActivity.this);
-					AlertDialog adialog = (AlertDialog) bda.onCreateDialog(1, forumTopicList[pos], 0);
-					adialog.show(); 
-				}
-				
-				
-			});
-			
+			if (getItemViewType(position) == 1){
+				subImage.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {	
+						bda = new BaseDialogActivity(TopicsActivity.this);
+						AlertDialog adialog = (AlertDialog) bda.onCreateDialog(1, forumTopicList[pos], 0);
+						adialog.show(); 
+					}
+				});
+			}
 			return v;
-		}
-		
-        
+		}  
 	}
-
 }

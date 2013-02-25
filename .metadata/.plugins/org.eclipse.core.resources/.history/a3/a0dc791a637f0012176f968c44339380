@@ -1,0 +1,27 @@
+package com.example.fhr;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class PostsActivity extends Activity {
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		String threadName, threadUri, threadNumOfPages;
+		
+		Bundle b = getIntent().getExtras();
+		threadName = b.getString("threadName");
+		threadUri = b.getString("threadName");
+		threadNumOfPages = b.getString("threadNumOfPages");
+				
+				
+				
+				
+				""threadUrl", fth[pos].threadUrl);
+					postActivity.putExtra("threadName", fth[pos].threadName);
+					postActivity.putExtra("postNumOfPages",
+	}
+
+}
