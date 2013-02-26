@@ -10,8 +10,6 @@ import org.jsoup.select.Elements;
 import android.util.Log;
 
 
-
-
 public class ForumTopicParser{
 
 	/**
@@ -23,7 +21,7 @@ public class ForumTopicParser{
 	public Elements  content = null;
 	
 	public ForumTopicParser() throws IOException{
-		doc = Jsoup.connect("http://www.forum.hr").get();
+		doc = Jsoup.connect("http://www.forum.hr").timeout(10*1000).get();
 		content = doc.getElementsByClass("alt1active");                     
 	}
 	

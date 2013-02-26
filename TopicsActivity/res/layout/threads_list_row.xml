@@ -55,7 +55,6 @@
         android:layout_below="@id/thread_name"
         android:layout_marginTop="1dip"
         android:layout_toLeftOf="@+id/thread_go_to_page"
-        android:background="@drawable/textview_selector"
         android:text="@+string/thread_author"
         android:textColor="#343434"
         android:textSize="9sp" />
@@ -68,19 +67,18 @@
          android:layout_alignRight="@+id/thread_name"
          android:layout_below="@+id/thread_author"
          android:layout_marginTop="3dp"
-         android:background="@drawable/textview_selector"
          android:text="@+string/thread_last_post_info"
          android:textColor="#343434"
          android:textSize="9sp" />
 
      <ImageButton
          android:id="@+id/thread_go_to_page"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_width="25dp"
+         android:layout_height="match_parent"
          android:layout_alignBottom="@+id/thread_last_post_info"
          android:layout_alignParentRight="true"
          android:layout_alignParentTop="true"
-         android:background="@null"
+         android:background="@drawable/textview_selector"
          android:contentDescription="@string/description"
          android:src="@drawable/thread_arrow_bw_small" />
 

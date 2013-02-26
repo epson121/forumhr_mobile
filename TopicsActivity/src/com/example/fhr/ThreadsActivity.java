@@ -2,6 +2,9 @@ package com.example.fhr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +16,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ThreadsActivity extends Activity {
 	
@@ -34,12 +36,31 @@ public class ThreadsActivity extends Activity {
 		topicUrl = b.getString("topicUrl");
 		topicName = b.getString("topicName");
 		
+		setTitle(topicName);
+		
 		threadList = (ListView) findViewById(R.id.threads_feed);
-		new Async().execute(new String[] {topicUrl, topicName});	
+		new Async(ThreadsActivity.this).execute(new String[] {topicUrl, topicName});	
 	}
 	
 	private class Async extends AsyncTask<String[], Void, String>{
-
+		
+		private ProgressDialog progressDialog;
+		private Activity act;
+		private Context con;
+		
+		public Async(Activity a) {
+			this.act = a;
+			con = this.act;
+			progressDialog = new ProgressDialog(con);
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog.setMessage("Loading..");
+			progressDialog.show();
+		}
+		
 		@Override
 		protected String doInBackground(String[]... params) {
 			try {
@@ -60,6 +81,10 @@ public class ThreadsActivity extends Activity {
 			else{
 				//generate error alert dialog
 			}
+
+			if (progressDialog.isShowing()) {
+	            progressDialog.dismiss();
+	        }
 		}
 		
 	}
@@ -96,12 +121,26 @@ public class ThreadsActivity extends Activity {
 			//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
 
 			if (fth[position].isTop)
-				threadName.setText("* " + fth[position].threadName);
+				threadName.setText("TOP " + fth[position].threadName);
 			else
 				threadName.setText(fth[position].threadName);
 			threadAuthor.setText(fth[position].threadAuthor);
 			threadLastPostInfo.setText(fth[position].lastPostInfo);
-
+			
+			
+			threadName.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					Intent postActivity = new Intent(getApplicationContext(), PostsActivity.class);
+					postActivity.putExtra("threadUrl", fth[pos].threadUrl);
+					postActivity.putExtra("threadName", fth[pos].threadName);
+					postActivity.putExtra("threadNumOfPages", fth[pos].numOfPages);
+					startActivity(postActivity);
+					
+				}
+			});
 			
 			goToPage.setOnClickListener(new OnClickListener() {
 				

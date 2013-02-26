@@ -37,7 +37,6 @@
         android:layout_below="@id/topic_name"
         android:layout_marginTop="0.2dip"
         android:layout_toLeftOf="@+id/topic_options"
-        android:background="@drawable/textview_selector"
         android:text="@+string/description"
         android:textColor="#343434"
         android:textSize="9sp" />
@@ -66,8 +65,10 @@
         android:layout_height="35dip"
         android:layout_alignBottom="@+id/thumbnail"
         android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/topic_description"
         android:contentDescription="@+string/description"
-        android:visibility="invisible"
-        android:src="@drawable/arrow_down_tall" />
+        android:background="@drawable/textview_selector"
+        android:src="@drawable/arrow_down_tall"
+        android:visibility="invisible" />
 
 </RelativeLayout>
