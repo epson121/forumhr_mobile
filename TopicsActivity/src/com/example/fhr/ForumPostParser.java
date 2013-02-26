@@ -19,14 +19,14 @@ public class ForumPostParser {
 	public ForumPostParser(String threadUri) throws IOException{
 		doc = Jsoup.connect(threadUri).get();
 		//postList = doc.getElementById("posts").select("table[id~=post[0-9]+");
-		Element th_list = doc.getElementById("threadslist");
+		Element th_list = doc.getElementById("posts");
 		if (th_list == null){
 			threadUri = threadUri.replace("show.hr/forum", "forum.hr");
 			doc = Jsoup.connect(threadUri + "&iframed=1#").timeout(15*1000).get();
 			postList = doc.getElementById("posts").select("div[id~=edit[0-9]+");
 		}
 		else{
-			postList = doc.getElementById("posts").select("div[id~=edit[0-9]+");
+			postList = th_list.select("div[id~=edit[0-9]+");
 		}
 		
 	}

@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TopicsActivity extends Activity {
@@ -36,6 +35,12 @@ public class TopicsActivity extends Activity {
 		setContentView(R.layout.activity_topic);
 		topicList = (ListView) findViewById(R.id.topics_feed);
 		new Async(TopicsActivity.this).execute("");	
+	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		TopicsActivity.this.finish();
 	}
 
 	private class Async extends AsyncTask<String, Void, String>{

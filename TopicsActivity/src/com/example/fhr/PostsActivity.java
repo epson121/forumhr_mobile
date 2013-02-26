@@ -4,38 +4,53 @@ package com.example.fhr;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class PostsActivity extends Activity {
 	
 	private ForumPostParser fpp;
 	private ForumPost[] fpl;
-	private int count, scrollCounter = 0;
+	private int count;
 	private ListView postList;
-	String s = "<head><meta name=viewport content=target-densitydpi=device-dpi/></head>";
+	private String cleanUri;
+	private int currentPage = 1;
+	String threadName;
+	String threadUri;
+	private BaseDialogActivity bda;
+	int threadNumOfPages;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post);
 		Bundle b = getIntent().getExtras();
-		String threadName = b.getString("threadName");
-		String threadUri = b.getString("threadUrl");
-		//int threadNumOfPages = b.getInt("threadNumOfPages");
+		threadName = b.getString("threadName");
+		threadUri =  b.getString("threadUrl");
+		threadNumOfPages = b.getInt("threadNumOfPages");
+		
+		if (threadUri.contains("&page=")){
+			cleanUri = threadUri.split("&page=")[0];
+			currentPage = Integer.parseInt(threadUri.split("&page=")[1]);
+		}
+		else{
+			cleanUri = threadUri;
+		}
+		
 		
 		setTitle(threadName);
 		postList = (ListView) findViewById(R.id.posts_feed);
@@ -94,7 +109,7 @@ public class PostsActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			return count;
+			return count + 2;
 		}
 
 		@Override
@@ -106,32 +121,101 @@ public class PostsActivity extends Activity {
 		public long getItemId(int position) {
 			return position;
 		}
+		
+		public int getItemViewType(int position) {
+         // Define a way to determine which layout to use, here it's just evens and odds.
+        	if (position == 0 || position == getCount()-1){
+				return 0;
+			}
+        	else{
+        		return 1;
+        	}
+        }
+
+        @Override
+        public int getViewTypeCount() {
+         return 2; // Count of different layouts
+        }
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v = convertView;
 			
 			if (convertView == null){
-				LayoutInflater li = getLayoutInflater();
-				v = li.inflate(R.layout.post_list_row, parent, false);
+				LayoutInflater li;
+				Log.d("APP", position + "");
+				if (getItemViewType(position) == 0){
+					li = getLayoutInflater();
+					v = li.inflate(R.layout.page_navigation, parent, false);
+					Log.d("APP", "inflated 00000");
+					Log.d("APP", "Clean uri:" + cleanUri);
+					Log.d("APP", "page num" + currentPage);
+					Log.d("APP", "CLEAN + CURR + 1 " +  cleanUri +  (currentPage+1));
+				}
+				else{
+					li = getLayoutInflater();
+					v = li.inflate(R.layout.post_list_row, parent, false);
+				}
 			}
 			
-			TextView username = (TextView) v.findViewById(R.id.post_username_text);
-			TextView date = (TextView) v.findViewById(R.id.post_date_text);
-			WebView postText = (WebView) v.findViewById(R.id.post_text);
-			//ImageView userAvatar = (ImageView) v.findViewById(R.id.post_avatar_image);
-			//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
-			
-			username.setText(fpl[position].postAuthor);
-			date.setText(fpl[position].postDate);
-			postText.loadDataWithBaseURL("", fpl[position].postHtml, null, "UTF-8", "");
-			
-			/*
-			LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) v.getLayoutParams();
-			params.height = vw_height + 20;
-			v.setLayoutParams(params);
-			*/
-			
+			if (position > 0 && position < getCount()-1){
+				TextView username = (TextView) v.findViewById(R.id.post_username_text);
+				TextView date = (TextView) v.findViewById(R.id.post_date_text);
+				WebView postText = (WebView) v.findViewById(R.id.post_text);
+				//ImageView userAvatar = (ImageView) v.findViewById(R.id.post_avatar_image);
+				//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
+				
+				username.setText(fpl[position-1].postAuthor);
+				date.setText(fpl[position-1].postDate);
+				postText.loadDataWithBaseURL("", fpl[position-1].postHtml, null, "UTF-8", "");
+				
+				/*
+				LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) v.getLayoutParams();
+				params.height = vw_height + 20;
+				v.setLayoutParams(params);
+				*/
+			}
+			else{
+				Log.d("APP", "POSITION IS : " + position);
+				ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
+				ImageView findPage = (ImageView) v.findViewById(R.id.post_find_page);
+				ImageView nextPage = (ImageView) v.findViewById(R.id.post_next_page);
+				
+				prevPage.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent goToPrevPage = new Intent(getApplicationContext(), PostsActivity.class);
+						goToPrevPage.putExtra("threadUrl", cleanUri + "&page=" +  (currentPage-1));
+						goToPrevPage.putExtra("threadName", threadName);
+						startActivity(goToPrevPage);
+						
+						
+					}
+				});
+				
+				findPage.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						bda = new BaseDialogActivity(PostsActivity.this, 2, threadNumOfPages, cleanUri);
+						AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
+						dialog.show();
+					}
+				});
+				
+				nextPage.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent goToNextPage = new Intent(getApplicationContext(), PostsActivity.class);
+						goToNextPage.putExtra("threadUrl", cleanUri + "&page=" + (currentPage+1));
+						goToNextPage.putExtra("threadName", threadName);
+						startActivity(goToNextPage);
+						
+					}
+				});
+			}
 			return v;
 		}
 		

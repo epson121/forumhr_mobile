@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -90,6 +89,12 @@ public class ThreadsActivity extends Activity {
 		
 	}
 
+	
+	/*
+	 * NE POKAZUJE PRVI ELEMENT
+	 */
+	
+		
 	public class ThreadAdapter extends BaseAdapter {
 			
         public int getCount(){
@@ -137,7 +142,7 @@ public class ThreadsActivity extends Activity {
 					Intent postActivity = new Intent(getApplicationContext(), PostsActivity.class);
 					postActivity.putExtra("threadUrl", fth[pos].threadUrl);
 					postActivity.putExtra("threadName", fth[pos].threadName);
-					//postActivity.putExtra("threadNumOfPages", fth[pos].numOfPages);
+					postActivity.putExtra("threadNumOfPages", fth[pos].numOfPages);
 					startActivity(postActivity);
 					
 				}
