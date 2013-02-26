@@ -110,9 +110,12 @@ public class PostsActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v = convertView;
-			LayoutInflater li = getLayoutInflater();
-			v = li.inflate(R.layout.post_list_row, parent, false);
-
+			
+			if (convertView == null){
+				LayoutInflater li = getLayoutInflater();
+				v = li.inflate(R.layout.post_list_row, parent, false);
+			}
+			
 			TextView username = (TextView) v.findViewById(R.id.post_username_text);
 			TextView date = (TextView) v.findViewById(R.id.post_date_text);
 			WebView postText = (WebView) v.findViewById(R.id.post_text);
