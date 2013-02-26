@@ -3,29 +3,30 @@ package com.example.fhr;
 
 import java.io.IOException;
 
-import com.example.fhr.ThreadsActivity.ThreadAdapter;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class PostsActivity extends Activity {
 	
 	private ForumPostParser fpp;
 	private ForumPost[] fpl;
-	private int count;
+	private int count, scrollCounter = 0;
 	private ListView postList;
+	String s = "<head><meta name=viewport content=target-densitydpi=device-dpi/></head>";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,8 @@ public class PostsActivity extends Activity {
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if (result.equals("ok")){
-				postList.setAdapter(new PostAdapter());
+				PostAdapter ad = new PostAdapter();
+				postList.setAdapter(ad);
 			}
 			if (progressDialog.isShowing()) {
 	            progressDialog.dismiss();
@@ -108,22 +110,24 @@ public class PostsActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v = convertView;
-			final int pos = position;
 			LayoutInflater li = getLayoutInflater();
-			v = li.inflate(R.layout.post_list_row, null);
-			
-			
+			v = li.inflate(R.layout.post_list_row, parent, false);
+
 			TextView username = (TextView) v.findViewById(R.id.post_username_text);
 			TextView date = (TextView) v.findViewById(R.id.post_date_text);
 			WebView postText = (WebView) v.findViewById(R.id.post_text);
 			//ImageView userAvatar = (ImageView) v.findViewById(R.id.post_avatar_image);
-			
 			//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
 			
 			username.setText(fpl[position].postAuthor);
 			date.setText(fpl[position].postDate);
 			postText.loadDataWithBaseURL("", fpl[position].postHtml, null, "UTF-8", "");
-
+			
+			/*
+			LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) v.getLayoutParams();
+			params.height = vw_height + 20;
+			v.setLayoutParams(params);
+			*/
 			
 			return v;
 		}

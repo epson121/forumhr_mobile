@@ -17,7 +17,7 @@ public class ForumPostParser {
 	//catch socket timeout connection
 	
 	public ForumPostParser(String threadUri) throws IOException{
-		doc = Jsoup.connect(threadUri).timeout(10*1000).get();
+		doc = Jsoup.connect(threadUri).timeout(15*1000).get();
 		postList = doc.getElementById("posts").select("div[id~=edit[0-9]+");
 	}
 	

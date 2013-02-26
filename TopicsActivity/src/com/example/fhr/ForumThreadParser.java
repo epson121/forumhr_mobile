@@ -16,7 +16,7 @@ public class ForumThreadParser {
 			doc = Jsoup.connect(url).get();
 			Element th_list = doc.getElementById("threadslist");
 			if (th_list == null){
-				doc = Jsoup.connect(url + "&iframed=1#").timeout(10*1000).get();
+				doc = Jsoup.connect(url + "&iframed=1#").timeout(15*1000).get();
 				threadList = doc.getElementById("threadslist").getElementsByTag("tr");
 			}
 			else{

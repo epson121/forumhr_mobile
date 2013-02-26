@@ -157,8 +157,8 @@ public class TopicsActivity extends Activity {
 				subImage.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {	
-						bda = new BaseDialogActivity(TopicsActivity.this);
-						AlertDialog adialog = (AlertDialog) bda.onCreateDialog(1, forumTopicList[pos], 0);
+						bda = new BaseDialogActivity(TopicsActivity.this, 1, forumTopicList[pos]);
+						AlertDialog adialog = (AlertDialog) bda.onCreateDialog();
 						adialog.show(); 
 					}
 				});

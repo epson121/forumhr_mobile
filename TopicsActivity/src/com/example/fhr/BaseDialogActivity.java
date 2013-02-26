@@ -19,9 +19,23 @@ public class BaseDialogActivity extends Activity {
 	HashMap<String, String> hm;
 	String[] urls;
 	Context con;
+	int id;
+	int pageNum;
+	int maxNumPages;
+	String postUrl;
 	
-	public BaseDialogActivity(Context c) {
+	public BaseDialogActivity(Context c, int id, ForumTopic ft) {
 		con = c;
+		this.id = id;
+		if (ft != null)
+			hm = ft.subTopics;
+	}
+	
+	public BaseDialogActivity(Context c, int id, int maxNumPages, String postUrl) {
+		con = c;
+		this.id = id;
+		this.maxNumPages = maxNumPages;
+		this.postUrl = postUrl;
 	}
 	
 	private String[] createThreadDialogList(){
@@ -49,12 +63,10 @@ public class BaseDialogActivity extends Activity {
 	 * 2 - Topic "go to page" dialog
 	 * 3 - "An error has occured dialog"
 	 */
-	protected Dialog onCreateDialog(int id, ForumTopic ft, final int maxNumPages){
-		if (ft != null)
-			hm = ft.subTopics;
+	protected Dialog onCreateDialog(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(con);
 
-		switch(id){
+		switch(this.id){
 		case 1:
 			builder
             .setTitle("Subtopics:")
@@ -91,12 +103,19 @@ public class BaseDialogActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					//check for exceptions !!!
-					int pn = Integer.parseInt(pNum.getText().toString());
-					if (pn > maxNumPages || pn < 1){
-						Toast.makeText(con, "Nonexisting page. Try again.", Toast.LENGTH_SHORT).show();
+					String txt = pNum.getText().toString();
+					if (!txt.equals("")){
+						pageNum = Integer.parseInt(txt);
+						if (pageNum > maxNumPages || pageNum < 1){
+							Toast.makeText(con, "Nonexisting page. Try again.", Toast.LENGTH_SHORT).show();
+						}
+						else{
+							Intent goToPage = new Intent(con, PostsActivity.class);
+							//goToPage.putExtra(name, value)
+						}
 					}
 					else{
-						Toast.makeText(con, "Going to page: " + pn, Toast.LENGTH_SHORT).show();
+						Toast.makeText(con, "Going to page: " + pageNum, Toast.LENGTH_SHORT).show();
 					}
 				}
 			})

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -136,7 +137,7 @@ public class ThreadsActivity extends Activity {
 					Intent postActivity = new Intent(getApplicationContext(), PostsActivity.class);
 					postActivity.putExtra("threadUrl", fth[pos].threadUrl);
 					postActivity.putExtra("threadName", fth[pos].threadName);
-					postActivity.putExtra("threadNumOfPages", fth[pos].numOfPages);
+					//postActivity.putExtra("threadNumOfPages", fth[pos].numOfPages);
 					startActivity(postActivity);
 					
 				}
@@ -146,8 +147,8 @@ public class ThreadsActivity extends Activity {
 				
 				@Override
 				public void onClick(View arg0) {
-					bda = new BaseDialogActivity(ThreadsActivity.this);
-					AlertDialog dialog = (AlertDialog) bda.onCreateDialog(2, null, fth[pos].numOfPages);
+					bda = new BaseDialogActivity(ThreadsActivity.this, 2, fth[pos].numOfPages, fth[pos].threadUrl);
+					AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
 					dialog.show();
 					//Toast.makeText(getApplicationContext(), "text", Toast.LENGTH_SHORT).show();
 				}

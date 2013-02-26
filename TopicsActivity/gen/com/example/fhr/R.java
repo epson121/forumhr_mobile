@@ -14,33 +14,35 @@ public final class R {
         public static final int arrow_down=0x7f020000;
         public static final int arrow_down_tall=0x7f020001;
         public static final int ic_launcher=0x7f020002;
+        public static final int img_border_top=0x7f020003;
         /** custom color for pressed state 
          */
-        public static final int normal_color=0x7f020011;
-        public static final int post_icon_bw=0x7f020003;
-        public static final int pressed_color=0x7f020010;
-        public static final int settings_icon_bw=0x7f020004;
-        public static final int star_icon_empty=0x7f020005;
-        public static final int star_icon_full=0x7f020006;
-        public static final int subtopics_icon=0x7f020007;
-        public static final int textview_selector=0x7f020008;
-        public static final int thread_arrow_bw=0x7f020009;
-        public static final int thread_arrow_bw_small=0x7f02000a;
-        public static final int thread_icon_bw=0x7f02000b;
-        public static final int topic_icon_2_bw=0x7f02000c;
-        public static final int topic_icon_bw=0x7f02000d;
-        public static final int topic_icon_closed=0x7f02000e;
-        public static final int topic_thread_red=0x7f02000f;
+        public static final int normal_color=0x7f020013;
+        public static final int post_icon_bw=0x7f020004;
+        public static final int post_icon_bw_small=0x7f020005;
+        public static final int pressed_color=0x7f020012;
+        public static final int settings_icon_bw=0x7f020006;
+        public static final int star_icon_empty=0x7f020007;
+        public static final int star_icon_full=0x7f020008;
+        public static final int subtopics_icon=0x7f020009;
+        public static final int textview_selector=0x7f02000a;
+        public static final int thread_arrow_bw=0x7f02000b;
+        public static final int thread_arrow_bw_small=0x7f02000c;
+        public static final int thread_icon_bw=0x7f02000d;
+        public static final int topic_icon_2_bw=0x7f02000e;
+        public static final int topic_icon_bw=0x7f02000f;
+        public static final int topic_icon_closed=0x7f020010;
+        public static final int topic_thread_red=0x7f020011;
     }
     public static final class id {
         public static final int list_image=0x7f070010;
         public static final int menu_settings=0x7f070014;
         public static final int page_number=0x7f070009;
-        public static final int post_avatar_image=0x7f07000d;
-        public static final int post_date_text=0x7f07000c;
+        public static final int post_avatar_image=0x7f07000b;
+        public static final int post_date_text=0x7f07000d;
         public static final int post_text=0x7f07000e;
         public static final int post_username_layout=0x7f07000a;
-        public static final int post_username_text=0x7f07000b;
+        public static final int post_username_text=0x7f07000c;
         public static final int posts_feed=0x7f070000;
         public static final int thread_author=0x7f070007;
         public static final int thread_go_to_page=0x7f070006;
