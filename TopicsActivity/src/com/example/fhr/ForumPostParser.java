@@ -17,10 +17,20 @@ public class ForumPostParser {
 	//catch socket timeout connection
 	
 	public ForumPostParser(String threadUri) throws IOException{
-		doc = Jsoup.connect(threadUri).timeout(15*1000).get();
-		postList = doc.getElementById("posts").select("div[id~=edit[0-9]+");
+		doc = Jsoup.connect(threadUri).get();
+		//postList = doc.getElementById("posts").select("table[id~=post[0-9]+");
+		Element th_list = doc.getElementById("threadslist");
+		if (th_list == null){
+			threadUri = threadUri.replace("show.hr/forum", "forum.hr");
+			doc = Jsoup.connect(threadUri + "&iframed=1#").timeout(15*1000).get();
+			postList = doc.getElementById("posts").select("div[id~=edit[0-9]+");
+		}
+		else{
+			postList = doc.getElementById("posts").select("div[id~=edit[0-9]+");
+		}
+		
 	}
-	
+		
 	public int getSize(){
 		return postList.size();
 	}
