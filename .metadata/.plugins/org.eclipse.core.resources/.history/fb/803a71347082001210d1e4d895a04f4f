@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:padding="5dip"
+    >
+    
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+        android:background="#FFFFFF"
+        android:layout_marginRight="5dip"
+    	>
+        
+         <ImageView
+             android:id="@+id/thread_icon"
+             android:layout_width="15dp"
+             android:layout_height="15dp"
+             android:contentDescription="@+string/description"
+             android:src="@drawable/thread_icon_bw" />
+        
+    </LinearLayout>
+    
+    
+
+    <!-- subtopics -->
+
+    <TextView
+        android:id="@+id/thread_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_toLeftOf="@+id/thread_go_to_page"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="2dp"
+        android:text="@+string/thread_name"
+        android:textColor="#040404"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:typeface="sans" 
+        android:background="@drawable/textview_selector"   
+      	android:clickable="true" 
+        />
+    
+     <TextView
+         android:id="@+id/thread_author"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/thumbnail"
+         android:layout_below="@id/thread_name"
+         android:layout_marginTop="1dip"
+         android:text="@+string/thread_author"
+         android:textColor="#040404"
+         android:textSize="9sp" 
+         />
+
+     <ImageButton
+         android:id="@+id/thread_go_to_page"
+         android:layout_width="25dp"
+         android:layout_height="match_parent"
+         android:layout_alignBottom="@+id/thread_last_post_info"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentTop="true"
+         android:background="@drawable/textview_selector"
+         android:contentDescription="@string/description"
+         android:src="@drawable/thread_arrow_bw_small" />
+
+     <TextView
+         android:id="@+id/thread_last_post_info"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/thread_author"
+         android:layout_alignBottom="@+id/thread_author"
+         android:layout_toLeftOf="@+id/thread_go_to_page"
+         android:text="@+string/thread_last_post_info"
+         android:textColor="#343434"
+         android:textSize="9sp" />
+
+</RelativeLayout>

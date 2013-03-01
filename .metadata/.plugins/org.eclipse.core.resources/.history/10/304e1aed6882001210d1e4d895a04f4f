@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topic_entry"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="5dip" >
+
+    <!-- ListRow Left sied Thumbnail image -->
+
+    <LinearLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
+        android:padding="3dip" >
+
+        <ImageView
+            android:id="@+id/list_image"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:contentDescription="@+string/description"
+            android:src="@drawable/topic_icon_2_bw" />
+    </LinearLayout>
+
+    <!-- Topic name -->
+
+
+    <!-- Topic description -->
+
+    <TextView
+        android:id="@+id/topic_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/topic_name"
+        android:layout_below="@id/topic_name"
+        android:layout_marginTop="0.2dip"
+        android:layout_toLeftOf="@+id/topic_options"
+        android:text="@+string/description"
+        android:textColor="#343434"
+        android:textSize="9sp" />
+
+    <!-- subtopics -->
+
+    <TextView
+        android:id="@+id/topic_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_marginRight="25dp"
+        android:layout_toLeftOf="@+id/topic_options"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:background="@drawable/textview_selector"
+        android:clickable="true"
+        android:text="@+string/topic_name"
+        android:textColor="#040404"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <ImageView
+        android:id="@+id/topic_options"
+        android:layout_width="35dip"
+        android:layout_height="35dip"
+        android:layout_alignBottom="@+id/thumbnail"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/topic_description"
+        android:contentDescription="@+string/description"
+        android:background="@drawable/textview_selector"
+        android:src="@drawable/arrow_down_tall"
+        android:visibility="invisible" />
+
+</RelativeLayout>

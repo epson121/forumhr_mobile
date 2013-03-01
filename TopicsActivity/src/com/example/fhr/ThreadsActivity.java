@@ -130,8 +130,8 @@ public class ThreadsActivity extends Activity {
 				threadName.setText("TOP " + fth[position].threadName);
 			else
 				threadName.setText(fth[position].threadName);
-			threadAuthor.setText(fth[position].threadAuthor);
-			threadLastPostInfo.setText(fth[position].lastPostInfo);
+			threadAuthor.setText("By: " + fth[position].threadAuthor);
+			threadLastPostInfo.setText("Last post: " + fth[position].lastPostInfo);
 			Log.d("APP", fth[pos].threadUrl);
 			
 			threadName.setOnClickListener(new OnClickListener() {
