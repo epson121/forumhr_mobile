@@ -8,19 +8,19 @@
 
     <ImageView
         android:id="@+id/post_prev_page"
-        android:layout_width="42dp"
-        android:layout_height="28dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/prev_page" 
         android:layout_gravity="left"
         android:contentDescription="@string/description"
-        android:layout_marginLeft="50dip"
+        android:layout_marginLeft="64dip"
         android:background="@drawable/img_border_top"
         />
 
     <ImageView
         android:id="@+id/post_find_page"
-        android:layout_width="34dp"
-        android:layout_height="35dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:src="@drawable/find_page" 
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="50dip"
@@ -30,7 +30,7 @@
 
     <ImageView
         android:id="@+id/post_next_page"
-        android:layout_width="42dp"
+        android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/next_page" 
         android:layout_gravity="right"

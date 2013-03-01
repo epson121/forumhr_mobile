@@ -71,14 +71,15 @@ public final class R {
         public static final int activity_splash=0x7f030001;
         public static final int activity_thread=0x7f030002;
         public static final int activity_topic=0x7f030003;
-        public static final int copy_threads_list_row=0x7f030004;
-        public static final int dialog_go_to_page=0x7f030005;
-        public static final int page_navigation=0x7f030006;
-        public static final int post_list_row=0x7f030007;
-        public static final int test_layout=0x7f030008;
-        public static final int threads_list_row=0x7f030009;
-        public static final int topics_list_row_no_subtopics=0x7f03000a;
-        public static final int topics_list_row_with_subtopics=0x7f03000b;
+        public static final int btn_load_more=0x7f030004;
+        public static final int copy_threads_list_row=0x7f030005;
+        public static final int dialog_go_to_page=0x7f030006;
+        public static final int page_navigation=0x7f030007;
+        public static final int post_list_row=0x7f030008;
+        public static final int test_layout=0x7f030009;
+        public static final int threads_list_row=0x7f03000a;
+        public static final int topics_list_row_no_subtopics=0x7f03000b;
+        public static final int topics_list_row_with_subtopics=0x7f03000c;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
@@ -87,9 +88,10 @@ public final class R {
         public static final int app_name=0x7f040000;
         public static final int description=0x7f040008;
         public static final int hello_world=0x7f040001;
+        public static final int load_more=0x7f04000a;
         public static final int menu_settings=0x7f040002;
-        public static final int post_date=0x7f04000b;
-        public static final int post_username=0x7f04000a;
+        public static final int post_date=0x7f04000c;
+        public static final int post_username=0x7f04000b;
         public static final int subtopics=0x7f040009;
         public static final int thread_author=0x7f040006;
         public static final int thread_last_post_info=0x7f040007;

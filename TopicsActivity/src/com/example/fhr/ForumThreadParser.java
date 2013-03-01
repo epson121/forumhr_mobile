@@ -29,7 +29,7 @@ public class ForumThreadParser {
 	}
 	
 	public int getCount(){
-		return threadList.size() - 2;
+		return threadList.size() - 1;
 	}
 	
 	public ForumThread[] getThreadList(){
@@ -38,9 +38,14 @@ public class ForumThreadParser {
 		String[] thId;
 		Elements anchors, divTags, hrefs, lastPInfo, thAuthor;
 		int counter = 0, i = 0;
+		
+		//get number of pages in topic
+		ForumThread.TopicNumOfPages = doc.select("div[class=pagenav]").select("td[class=vbmenu_control]").get(0).text().split("od ")[1];
+		
 		for (Element e : threadList){
 			ForumThread thread = new ForumThread();
-			if (counter >= 2){
+			//first element is not a thread
+			if (counter > 0){
 				//get thread id
 				thId = e.child(0).attr("id").split("_");
 				if (!thId[2].equals("")){
@@ -84,6 +89,9 @@ public class ForumThreadParser {
 					thAuthor = divTags.select("[style=cursor:pointer]"); 
 					if (!thAuthor.isEmpty())
 						thread.threadAuthor = thAuthor.get(0).text();
+					else{
+						thread.threadAuthor = divTags.select("div[class=smallfont]").get(0).text();
+					}
 				}	
 				
 				thList[i] = thread;

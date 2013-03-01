@@ -43,6 +43,8 @@ public class PostsActivity extends Activity {
 		threadUri =  b.getString("threadUrl");
 		threadNumOfPages = b.getInt("threadNumOfPages");
 		
+		Log.d("APP", "THREAD URI: " + threadUri);
+		
 		if (threadUri.contains("&page=")){
 			cleanUri = threadUri.split("&page=")[0];
 			currentPage = Integer.parseInt(threadUri.split("&page=")[1]);
@@ -74,6 +76,8 @@ public class PostsActivity extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressDialog.setMessage("Loading..");
+			progressDialog.setCancelable(false);
+			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 		}
 		
@@ -143,14 +147,9 @@ public class PostsActivity extends Activity {
 			
 			if (convertView == null){
 				LayoutInflater li;
-				Log.d("APP", position + "");
 				if (getItemViewType(position) == 0){
 					li = getLayoutInflater();
 					v = li.inflate(R.layout.page_navigation, parent, false);
-					Log.d("APP", "inflated 00000");
-					Log.d("APP", "Clean uri:" + cleanUri);
-					Log.d("APP", "page num" + currentPage);
-					Log.d("APP", "CLEAN + CURR + 1 " +  cleanUri +  (currentPage+1));
 				}
 				else{
 					li = getLayoutInflater();
@@ -162,21 +161,13 @@ public class PostsActivity extends Activity {
 				TextView username = (TextView) v.findViewById(R.id.post_username_text);
 				TextView date = (TextView) v.findViewById(R.id.post_date_text);
 				WebView postText = (WebView) v.findViewById(R.id.post_text);
-				//ImageView userAvatar = (ImageView) v.findViewById(R.id.post_avatar_image);
-				//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
-				
+
 				username.setText(fpl[position-1].postAuthor);
 				date.setText(fpl[position-1].postDate);
 				postText.loadDataWithBaseURL("", fpl[position-1].postHtml, null, "UTF-8", "");
-				
-				/*
-				LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) v.getLayoutParams();
-				params.height = vw_height + 20;
-				v.setLayoutParams(params);
-				*/
+
 			}
 			else{
-				Log.d("APP", "POSITION IS : " + position);
 				ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
 				ImageView findPage = (ImageView) v.findViewById(R.id.post_find_page);
 				ImageView nextPage = (ImageView) v.findViewById(R.id.post_next_page);
@@ -189,36 +180,27 @@ public class PostsActivity extends Activity {
 						goToPrevPage.putExtra("threadUrl", cleanUri + "&page=" +  (currentPage-1));
 						goToPrevPage.putExtra("threadName", threadName);
 						startActivity(goToPrevPage);
-						
-						
 					}
-				});
-				
+				});			
 				findPage.setOnClickListener(new OnClickListener() {
-					
 					@Override
 					public void onClick(View v) {
-						bda = new BaseDialogActivity(PostsActivity.this, 2, threadNumOfPages, cleanUri);
+						bda = new BaseDialogActivity(PostsActivity.this, 2, threadNumOfPages, cleanUri, threadName, 1);
 						AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
 						dialog.show();
 					}
 				});
-				
 				nextPage.setOnClickListener(new OnClickListener() {
-					
 					@Override
 					public void onClick(View v) {
 						Intent goToNextPage = new Intent(getApplicationContext(), PostsActivity.class);
 						goToNextPage.putExtra("threadUrl", cleanUri + "&page=" + (currentPage+1));
 						goToNextPage.putExtra("threadName", threadName);
 						startActivity(goToNextPage);
-						
 					}
 				});
 			}
 			return v;
 		}
-		
 	}
-
 }

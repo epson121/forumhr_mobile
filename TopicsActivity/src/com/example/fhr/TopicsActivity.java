@@ -60,6 +60,7 @@ public class TopicsActivity extends Activity {
 			super.onPreExecute();
 			progressDialog.setMessage("Loading..");
 			progressDialog.setCancelable(false);
+			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 		}
 		

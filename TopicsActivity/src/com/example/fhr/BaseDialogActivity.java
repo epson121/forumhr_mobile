@@ -16,13 +16,15 @@ import android.widget.Toast;
 
 public class BaseDialogActivity extends Activity {
 
-	HashMap<String, String> hm;
-	String[] urls;
-	Context con;
-	int id;
-	int pageNum;
-	int maxNumPages;
-	String postUrl;
+	private HashMap<String, String> hm;
+	private String[] urls;
+	private Context con;
+	private int id;
+	private int pageNum;
+	private int maxNumPages;
+	private String Url;
+	private String name;
+	private int threadOrPost;
 	
 	public BaseDialogActivity(Context c, int id, ForumTopic ft) {
 		con = c;
@@ -31,11 +33,15 @@ public class BaseDialogActivity extends Activity {
 			hm = ft.subTopics;
 	}
 	
-	public BaseDialogActivity(Context c, int id, int maxNumPages, String postUrl) {
+	//(context, id of dialog (look below), maximum number of pages in thread/post, urlOfThread/post
+	// name of thread/post, thread or post (1 | 2)
+	public BaseDialogActivity(Context c, int id, int maxNumPages, String Url, String Name, int threadOrPost) {
 		con = c;
 		this.id = id;
 		this.maxNumPages = maxNumPages;
-		this.postUrl = postUrl;
+		this.Url = Url;
+		this.name = Name;
+		this.threadOrPost = threadOrPost;
 	}
 	
 	private String[] createThreadDialogList(){
@@ -110,12 +116,23 @@ public class BaseDialogActivity extends Activity {
 							Toast.makeText(con, "Nonexisting page. Try again.", Toast.LENGTH_SHORT).show();
 						}
 						else{
-							Intent goToPage = new Intent(con, PostsActivity.class);
-							//goToPage.putExtra(name, value)
+							if (threadOrPost == 2){
+								Intent goToPage = new Intent(con, PostsActivity.class);
+								goToPage.putExtra("threadUrl", Url + "&page=" + pageNum);
+								goToPage.putExtra("threadName", name);	
+								goToPage.putExtra("threadNumOfPages", maxNumPages);
+								con.startActivity(goToPage);
+							}
+							else{
+								Intent goToPage = new Intent(con, ThreadsActivity.class);
+								goToPage.putExtra("topicUrl", Url + "&page=" + pageNum);
+								goToPage.putExtra("topicName", name);	
+								con.startActivity(goToPage);
+							}
 						}
 					}
 					else{
-						Toast.makeText(con, "Going to page: " + pageNum, Toast.LENGTH_SHORT).show();
+						//do nothing
 					}
 				}
 			})
