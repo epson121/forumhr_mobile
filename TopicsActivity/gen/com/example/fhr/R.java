@@ -41,17 +41,18 @@ public final class R {
     }
     public static final class id {
         public static final int imageView1=0x7f070001;
-        public static final int list_image=0x7f070014;
-        public static final int menu_settings=0x7f070018;
+        public static final int list_image=0x7f070015;
+        public static final int menu_settings=0x7f070019;
+        public static final int page_info=0x7f07000e;
         public static final int page_number=0x7f07000a;
-        public static final int post_avatar_image=0x7f07000f;
-        public static final int post_date_text=0x7f070011;
+        public static final int post_avatar_image=0x7f070010;
+        public static final int post_date_text=0x7f070012;
         public static final int post_find_page=0x7f07000c;
         public static final int post_next_page=0x7f07000d;
         public static final int post_prev_page=0x7f07000b;
-        public static final int post_text=0x7f070012;
-        public static final int post_username_layout=0x7f07000e;
-        public static final int post_username_text=0x7f070010;
+        public static final int post_text=0x7f070013;
+        public static final int post_username_layout=0x7f07000f;
+        public static final int post_username_text=0x7f070011;
         public static final int posts_feed=0x7f070000;
         public static final int thread_author=0x7f070008;
         public static final int thread_go_to_page=0x7f070007;
@@ -60,10 +61,10 @@ public final class R {
         public static final int thread_name=0x7f070006;
         public static final int threads_feed=0x7f070002;
         public static final int thumbnail=0x7f070004;
-        public static final int topic_description=0x7f070015;
-        public static final int topic_entry=0x7f070013;
-        public static final int topic_name=0x7f070016;
-        public static final int topic_options=0x7f070017;
+        public static final int topic_description=0x7f070016;
+        public static final int topic_entry=0x7f070014;
+        public static final int topic_name=0x7f070017;
+        public static final int topic_options=0x7f070018;
         public static final int topics_feed=0x7f070003;
     }
     public static final class layout {
@@ -90,8 +91,9 @@ public final class R {
         public static final int hello_world=0x7f040001;
         public static final int load_more=0x7f04000a;
         public static final int menu_settings=0x7f040002;
-        public static final int post_date=0x7f04000c;
-        public static final int post_username=0x7f04000b;
+        public static final int page_info=0x7f04000b;
+        public static final int post_date=0x7f04000d;
+        public static final int post_username=0x7f04000c;
         public static final int subtopics=0x7f040009;
         public static final int thread_author=0x7f040006;
         public static final int thread_last_post_info=0x7f040007;

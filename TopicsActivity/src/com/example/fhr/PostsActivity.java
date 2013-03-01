@@ -1,8 +1,6 @@
 package com.example.fhr;
 
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -10,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PostsActivity extends Activity {
 	
@@ -33,6 +32,8 @@ public class PostsActivity extends Activity {
 	String threadUri;
 	private BaseDialogActivity bda;
 	int threadNumOfPages;
+	Handler reloadHandler;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class PostsActivity extends Activity {
 		threadUri =  b.getString("threadUrl");
 		threadNumOfPages = b.getInt("threadNumOfPages");
 		
-		Log.d("APP", "THREAD URI: " + threadUri);
+		reloadHandler = new Handler();
 		
 		if (threadUri.contains("&page=")){
 			cleanUri = threadUri.split("&page=")[0];
@@ -52,12 +53,14 @@ public class PostsActivity extends Activity {
 		else{
 			cleanUri = threadUri;
 		}
-		
-		
 		setTitle(threadName);
 		postList = (ListView) findViewById(R.id.posts_feed);
-		Log.d("APP", threadUri);
-		new Async(PostsActivity.this).execute(threadUri);	
+		if (Helper.isNetworkAvailable(PostsActivity.this)){
+			new Async(PostsActivity.this).execute(threadUri);	
+		}
+		else{
+			Toast.makeText(getApplicationContext(), "Internet connection not available.", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	private class Async extends AsyncTask<String, Void, String>{
@@ -89,8 +92,10 @@ public class PostsActivity extends Activity {
 				count = fpp.getSize();
 				return "ok";
 			} 
-			catch (IOException e) {
-				e.printStackTrace();
+			catch (Exception e) {
+				String[] reloadData = new String[]{ };
+				Helper h = new Helper(PostsActivity.this, 1, reloadData ); 
+				reloadHandler.post(h);
 			}
 			return "error";
 		}
@@ -107,6 +112,7 @@ public class PostsActivity extends Activity {
 	        }
 		}
 	}
+	
 	
 	
 	private class PostAdapter extends BaseAdapter{
@@ -127,7 +133,6 @@ public class PostsActivity extends Activity {
 		}
 		
 		public int getItemViewType(int position) {
-         // Define a way to determine which layout to use, here it's just evens and odds.
         	if (position == 0 || position == getCount()-1){
 				return 0;
 			}
@@ -171,7 +176,9 @@ public class PostsActivity extends Activity {
 				ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
 				ImageView findPage = (ImageView) v.findViewById(R.id.post_find_page);
 				ImageView nextPage = (ImageView) v.findViewById(R.id.post_next_page);
+				TextView pageInfo = (TextView) v.findViewById(R.id.page_info);
 				
+				pageInfo.setText("page " + currentPage + " of " + threadNumOfPages);
 				prevPage.setOnClickListener(new OnClickListener() {
 					
 					@Override

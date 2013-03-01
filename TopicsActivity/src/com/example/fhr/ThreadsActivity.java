@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ThreadsActivity extends Activity {
 	
@@ -27,6 +29,9 @@ public class ThreadsActivity extends Activity {
 	protected ForumThread[] fth;
 	protected int count;
 	private BaseDialogActivity bda;
+	private int currentPage;
+	Handler reloadHandler;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +39,20 @@ public class ThreadsActivity extends Activity {
 		setContentView(R.layout.activity_thread);
 		final Bundle b = getIntent().getExtras();
 		
+		reloadHandler = new Handler();
+		
 		topicUrl = b.getString("topicUrl");
 		topicName = b.getString("topicName");
-		
+		getUri(topicUrl, 3);
 		setTitle(topicName);
 		
 		threadList = (ListView) findViewById(R.id.threads_feed);
-		new Async(ThreadsActivity.this).execute(new String[] {topicUrl, topicName});	
+		if (Helper.isNetworkAvailable(ThreadsActivity.this)){
+			new Async(ThreadsActivity.this).execute(new String[] {topicUrl, topicName});
+		}
+		else{
+			Toast.makeText(getApplicationContext(), "Internet connection not available.", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	private class Async extends AsyncTask<String[], Void, String>{
@@ -70,11 +82,14 @@ public class ThreadsActivity extends Activity {
 				fthp = new ForumThreadParser(params[0][0]);
 				fth = fthp.getThreadList();
 				count = fthp.getCount();
+				return "ok";
 			} 
 			catch (Exception e) {
-				return "";
+				String[] reloadData = new String[]{topicUrl, topicName };
+				Helper h = new Helper(ThreadsActivity.this, 1, reloadData ); 
+				reloadHandler.post(h);
 			}
-			return "ok";
+			return "error";
 		}
 		
 		@Override
@@ -184,6 +199,9 @@ public class ThreadsActivity extends Activity {
 				ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
 				ImageView findPage = (ImageView) v.findViewById(R.id.post_find_page);
 				ImageView nextPage = (ImageView) v.findViewById(R.id.post_next_page);
+				TextView pageInfo = (TextView) v.findViewById(R.id.page_info);
+				
+				pageInfo.setText("page " + currentPage + " of " + ForumThread.TopicNumOfPages);
 				
 				prevPage.setOnClickListener(new OnClickListener() {
 					
@@ -193,8 +211,6 @@ public class ThreadsActivity extends Activity {
 						goToPrevPage.putExtra("topicUrl", getUri(topicUrl, 1));
 						goToPrevPage.putExtra("topicName", topicName);
 						startActivity(goToPrevPage);
-						
-						
 					}
 				});
 				
@@ -230,6 +246,7 @@ public class ThreadsActivity extends Activity {
 		}
 	}
 	
+	
 	/*
 	 * 1 -> previous page
 	 * 2 -> next page
@@ -237,7 +254,6 @@ public class ThreadsActivity extends Activity {
 	 */
 	private String getUri(String url, int task){
 		String uri;
-		int currentPage;
 		if (url.contains("&page=")){
 			uri = url.split("&page=")[0];
 			currentPage = Integer.parseInt(url.split("&page=")[1]);

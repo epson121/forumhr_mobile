@@ -1,0 +1,218 @@
+package com.example.fhr;
+
+
+import java.io.IOException;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class PostsActivity extends Activity {
+	
+	private ForumPostParser fpp;
+	private ForumPost[] fpl;
+	private int count;
+	private ListView postList;
+	private String cleanUri;
+	private int currentPage = 1;
+	String threadName;
+	String threadUri;
+	private BaseDialogActivity bda;
+	int threadNumOfPages;
+	
+	final Handler exceptionHandler = new Handler();
+	Runnable exceptionAlert = new Runnable() {
+		
+		@Override
+		public void run() {
+			//show error alert dialog (prefferably with reload button)
+		}
+	};
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_post);
+		Bundle b = getIntent().getExtras();
+		threadName = b.getString("threadName");
+		threadUri =  b.getString("threadUrl");
+		threadNumOfPages = b.getInt("threadNumOfPages");
+		
+		if (threadUri.contains("&page=")){
+			cleanUri = threadUri.split("&page=")[0];
+			currentPage = Integer.parseInt(threadUri.split("&page=")[1]);
+		}
+		else{
+			cleanUri = threadUri;
+		}
+		setTitle(threadName);
+		postList = (ListView) findViewById(R.id.posts_feed);
+		if (Helper.isNetworkAvailable(PostsActivity.this)){
+			new Async(PostsActivity.this).execute(threadUri);	
+		}
+		else{
+			Toast.makeText(getApplicationContext(), "Internet connection not available.", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	private class Async extends AsyncTask<String, Void, String>{
+		
+		private ProgressDialog progressDialog;
+		private Activity act;
+		private Context con;
+		
+		public Async(Activity a) {
+			this.act = a;
+			con = this.act;
+			progressDialog = new ProgressDialog(con);
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog.setMessage("Loading..");
+			progressDialog.setCancelable(false);
+			progressDialog.setIndeterminate(true);
+			progressDialog.show();
+		}
+		
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				fpp = new ForumPostParser(params[0]);
+				fpl = fpp.getPostList();
+				count = fpp.getSize();
+				return "ok";
+			} 
+			catch (Exception e) {
+				
+			}
+			return "error";
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if (result.equals("ok")){
+				PostAdapter ad = new PostAdapter();
+				postList.setAdapter(ad);
+			}
+			if (progressDialog.isShowing()) {
+	            progressDialog.dismiss();
+	        }
+		}
+	}
+	
+	
+	
+	private class PostAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			return count + 2;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return position;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+		
+		public int getItemViewType(int position) {
+        	if (position == 0 || position == getCount()-1){
+				return 0;
+			}
+        	else{
+        		return 1;
+        	}
+        }
+
+        @Override
+        public int getViewTypeCount() {
+         return 2; // Count of different layouts
+        }
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View v = convertView;
+			
+			if (convertView == null){
+				LayoutInflater li;
+				if (getItemViewType(position) == 0){
+					li = getLayoutInflater();
+					v = li.inflate(R.layout.page_navigation, parent, false);
+				}
+				else{
+					li = getLayoutInflater();
+					v = li.inflate(R.layout.post_list_row, parent, false);
+				}
+			}
+			
+			if (position > 0 && position < getCount()-1){
+				TextView username = (TextView) v.findViewById(R.id.post_username_text);
+				TextView date = (TextView) v.findViewById(R.id.post_date_text);
+				WebView postText = (WebView) v.findViewById(R.id.post_text);
+
+				username.setText(fpl[position-1].postAuthor);
+				date.setText(fpl[position-1].postDate);
+				postText.loadDataWithBaseURL("", fpl[position-1].postHtml, null, "UTF-8", "");
+
+			}
+			else{
+				ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
+				ImageView findPage = (ImageView) v.findViewById(R.id.post_find_page);
+				ImageView nextPage = (ImageView) v.findViewById(R.id.post_next_page);
+				TextView pageInfo = (TextView) v.findViewById(R.id.page_info);
+				
+				pageInfo.setText("page " + currentPage + " of " + threadNumOfPages);
+				prevPage.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent goToPrevPage = new Intent(getApplicationContext(), PostsActivity.class);
+						goToPrevPage.putExtra("threadUrl", cleanUri + "&page=" +  (currentPage-1));
+						goToPrevPage.putExtra("threadName", threadName);
+						startActivity(goToPrevPage);
+					}
+				});			
+				findPage.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						bda = new BaseDialogActivity(PostsActivity.this, 2, threadNumOfPages, cleanUri, threadName, 1);
+						AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
+						dialog.show();
+					}
+				});
+				nextPage.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent goToNextPage = new Intent(getApplicationContext(), PostsActivity.class);
+						goToNextPage.putExtra("threadUrl", cleanUri + "&page=" + (currentPage+1));
+						goToNextPage.putExtra("threadName", threadName);
+						startActivity(goToNextPage);
+					}
+				});
+			}
+			return v;
+		}
+	}
+}

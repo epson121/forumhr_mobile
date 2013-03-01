@@ -3,7 +3,9 @@ package com.example.fhr;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Window;
+import android.widget.Toast;
 
 public class SplashActivity extends Activity{
 
@@ -13,6 +15,15 @@ public class SplashActivity extends Activity{
 	        super.onCreate(savedInstanceState);
 	        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 	        setContentView(R.layout.activity_splash);
+	        
+	        final Handler noInternetHandler = new Handler();
+	        final Runnable showMessage = new Runnable() {
+				
+				@Override
+				public void run() {
+					Toast.makeText(getApplicationContext(), "Internet connection not available.", Toast.LENGTH_SHORT).show();
+				}
+			};
 	        
 	        // Delayed login activity
 	        Thread timer = new Thread(){
@@ -26,8 +37,13 @@ public class SplashActivity extends Activity{
 	        				sleep(100);
 	        				timer += 100;
 	        			}
-	        			Intent topicsActivity = new Intent(getApplicationContext(), TopicsActivity.class);
-	    				startActivity(topicsActivity);
+	        			if (Helper.isNetworkAvailable(SplashActivity.this)){
+	        				Intent topicsActivity = new Intent(getApplicationContext(), TopicsActivity.class);
+		    				startActivity(topicsActivity);
+	        			}
+	        			else{
+	        				noInternetHandler.post(showMessage);
+	        			}
 	        		} 
 	        		catch (InterruptedException e){
 					}
@@ -38,6 +54,7 @@ public class SplashActivity extends Activity{
 	        	}
 	        };
 	        timer.start();
-	        
 	    }
+	  
+	 
 }

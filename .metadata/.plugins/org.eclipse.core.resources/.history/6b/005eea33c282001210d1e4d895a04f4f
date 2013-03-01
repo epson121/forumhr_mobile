@@ -1,0 +1,285 @@
+package com.example.fhr;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class ThreadsActivity extends Activity {
+	
+	private ListView threadList;
+	protected String topicUrl;
+	protected String topicName;
+	protected ForumThreadParser fthp, moreFthp;
+	protected ForumThread[] fth;
+	protected int count;
+	private BaseDialogActivity bda;
+	private int currentPage;
+	
+
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_thread);
+		final Bundle b = getIntent().getExtras();
+		
+		topicUrl = b.getString("topicUrl");
+		topicName = b.getString("topicName");
+		getUri(topicUrl, 3);
+		setTitle(topicName);
+		
+		threadList = (ListView) findViewById(R.id.threads_feed);
+		if (Helper.isNetworkAvailable(ThreadsActivity.this)){
+			new Async(ThreadsActivity.this).execute(new String[] {topicUrl, topicName});
+		}
+		else{
+			Toast.makeText(getApplicationContext(), "Internet connection not available.", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	private class Async extends AsyncTask<String[], Void, String>{
+		
+		private ProgressDialog progressDialog;
+		private Activity act;
+		private Context con;
+		
+		public Async(Activity a) {
+			this.act = a;
+			con = this.act;
+			progressDialog = new ProgressDialog(con);
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog.setMessage("Loading..");
+			progressDialog.setCancelable(false);
+			progressDialog.setIndeterminate(true);
+			progressDialog.show();
+		}
+		
+		@Override
+		protected String doInBackground(String[]... params) {
+			try {
+				fthp = new ForumThreadParser(params[0][0]);
+				fth = fthp.getThreadList();
+				count = fthp.getCount();
+				return "ok";
+			} 
+			catch (Exception e) {
+				Helper h = new Helper(TopicsActivity.this, 1, null); 
+				reloadHandler.post(h);
+			}
+			return "error";
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			if (result.equals("ok"))
+				threadList.setAdapter(new ThreadAdapter());
+			else{
+				//generate error alert dialog
+			}
+
+			if (progressDialog.isShowing()) {
+	            progressDialog.dismiss();
+	        }
+		}
+		
+	}
+
+	public class ThreadAdapter extends BaseAdapter {
+			
+        public int getCount(){
+			return count + 1;   	
+        }
+        
+        public Object getItem(int position) {
+            return position;
+        }
+        
+        public long getItemId(int position) {
+            return position;
+        }
+
+		
+		public int getItemViewType(int position) {
+         // Define a way to determine which layout to use, here it's just evens and odds.
+        	if (position == getCount()-1){
+				return 0;
+			}
+        	else{
+        		return 1;
+        	}
+        }
+		
+		 @Override
+	        public int getViewTypeCount() {
+	         return 2; // Count of different layouts
+	        }
+  
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View v = convertView;
+			final int pos = position;
+			if (v == null){
+				LayoutInflater li = getLayoutInflater();
+				if (getItemViewType(position) == 0){
+					v = li.inflate(R.layout.page_navigation, null);
+					Log.d("APP", "Inflated navigation");
+				}
+				else{
+					v = li.inflate(R.layout.threads_list_row, null);
+					Log.d("APP", "THREAD new inflation");
+				}
+			}
+			
+			if (position < getCount() - 1){
+				Log.d("APP", "POSITION IS: " + position);
+				TextView threadName = (TextView) v.findViewById(R.id.thread_name);
+				TextView threadAuthor = (TextView) v.findViewById(R.id.thread_author);
+				TextView threadLastPostInfo = (TextView) v.findViewById(R.id.thread_last_post_info);
+				ImageButton goToPage = (ImageButton) v.findViewById(R.id.thread_go_to_page);
+				
+				//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
+	
+				if (fth[position].isTop)
+					threadName.setText("TOP " + fth[position].threadName);
+				else
+					threadName.setText(fth[position].threadName);
+				threadAuthor.setText("By: " + fth[position].threadAuthor);
+				threadLastPostInfo.setText("Last post: " + fth[position].lastPostInfo);
+				Log.d("APP", fth[pos].threadUrl);
+				
+				threadName.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Log.d("APP_ONCLICK", fth[pos].threadUrl);
+						Intent postActivity = new Intent(getApplicationContext(), PostsActivity.class);
+						postActivity.putExtra("threadUrl", fth[pos].threadUrl);
+						postActivity.putExtra("threadName", fth[pos].threadName);
+						postActivity.putExtra("threadNumOfPages", fth[pos].numOfPages);
+						startActivity(postActivity);
+						
+					}
+				});
+				
+				goToPage.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						bda = new BaseDialogActivity(ThreadsActivity.this, 2, fth[pos].numOfPages, fth[pos].threadUrl, topicName, 2);
+						AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
+						dialog.show();
+						//Toast.makeText(getApplicationContext(), "text", Toast.LENGTH_SHORT).show();
+					}
+				});
+			}
+			else{
+				ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
+				ImageView findPage = (ImageView) v.findViewById(R.id.post_find_page);
+				ImageView nextPage = (ImageView) v.findViewById(R.id.post_next_page);
+				TextView pageInfo = (TextView) v.findViewById(R.id.page_info);
+				
+				pageInfo.setText("page " + currentPage + " of " + ForumThread.TopicNumOfPages);
+				
+				prevPage.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent goToPrevPage = new Intent(getApplicationContext(), ThreadsActivity.class);
+						goToPrevPage.putExtra("topicUrl", getUri(topicUrl, 1));
+						goToPrevPage.putExtra("topicName", topicName);
+						startActivity(goToPrevPage);
+					}
+				});
+				
+				findPage.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						bda = new BaseDialogActivity(ThreadsActivity.this, 
+													 2, 
+													 Integer.parseInt(ForumThread.TopicNumOfPages),
+													 getUri(topicUrl, 3),
+													 topicName,
+													 1
+													 );
+						AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
+						dialog.show();
+					}
+				});
+				
+				nextPage.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Intent goToNextPage = new Intent(getApplicationContext(), ThreadsActivity.class);
+						goToNextPage.putExtra("topicUrl", getUri(topicUrl, 2));
+						goToNextPage.putExtra("topicName", topicName);
+						startActivity(goToNextPage);
+					}
+				});
+			}
+			
+			return v;
+		}
+	}
+	
+	
+	/*
+	 * 1 -> previous page
+	 * 2 -> next page
+	 * 3 -> entered page
+	 */
+	private String getUri(String url, int task){
+		String uri;
+		if (url.contains("&page=")){
+			uri = url.split("&page=")[0];
+			currentPage = Integer.parseInt(url.split("&page=")[1]);
+		}
+		else{
+			uri = url;
+			currentPage = 1;
+		}
+		switch (task) {
+			case 1:
+				int prevPage = currentPage - 1;
+				if (currentPage == 1){
+					return uri;
+				}
+				else{
+					return uri + "&page=" + prevPage;
+				}
+			case 2:
+				int nextPage = currentPage + 1;
+				if (nextPage > Integer.parseInt(ForumThread.TopicNumOfPages)){
+					return uri;
+				}
+				else{
+					return uri + "&page=" + nextPage;
+				}
+			case 3:
+				return uri;
+			default:
+				return "";
+		}
+	}	
+}

@@ -2,16 +2,14 @@ package com.example.fhr;
 
 import java.io.IOException;
 
-import org.apache.http.client.HttpResponseException;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TopicsActivity extends Activity {
 	
@@ -28,13 +27,23 @@ public class TopicsActivity extends Activity {
 	private ForumTopicParser ftp = null;
 	private ForumTopic[] forumTopicList;
 	private BaseDialogActivity bda;
+	Handler reloadHandler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_topic);
+		
+		reloadHandler = new Handler();
+		
 		topicList = (ListView) findViewById(R.id.topics_feed);
-		new Async(TopicsActivity.this).execute("");	
+		if (Helper.isNetworkAvailable(TopicsActivity.this)){
+			new Async(TopicsActivity.this).execute("");
+		}
+		else{
+			Toast.makeText(getApplicationContext(), "Internet connection not available.", Toast.LENGTH_SHORT).show();
+		}
+		
 	}
 	
 	@Override
@@ -66,17 +75,15 @@ public class TopicsActivity extends Activity {
 		
 		@Override
 		protected String doInBackground(String... params) {
-			 try {                                              
+			 try {      
 	        	ftp = new ForumTopicParser();
 	        	forumTopicList = ftp.getTopicList();
 	        	count = ftp.getCount();
+	        	throw new IOException();
 	        } 
-			catch(HttpResponseException e){
-				Intent threadsActivity = new Intent(getApplicationContext(), TopicsActivity.class);
-				startActivity(threadsActivity);
-			}
-			catch (IOException e) {                          
-	            e.printStackTrace();                           
+			catch(IOException e){
+				Helper h = new Helper(TopicsActivity.this, 1, null); 
+				reloadHandler.post(h);
 	        }       
 			return "";
 		}
@@ -84,9 +91,7 @@ public class TopicsActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			ImageAdapter adapter = new ImageAdapter();
-			adapter.notifyDataSetChanged();
 			topicList.setAdapter(adapter);
-			
 			if (progressDialog.isShowing()) {
 	            progressDialog.dismiss();
 	        }
@@ -108,7 +113,6 @@ public class TopicsActivity extends Activity {
         
         @Override
         public int getItemViewType(int position) {
-         // Define a way to determine which layout to use, here it's just evens and odds.
         	if (forumTopicList[position].subTopics.isEmpty()){
 				return 0;
 			}
@@ -119,7 +123,7 @@ public class TopicsActivity extends Activity {
 
         @Override
         public int getViewTypeCount() {
-         return 2; // Count of different layouts
+        	return 2; // Count of different layouts
         }
  
         //notify set changed
@@ -128,19 +132,15 @@ public class TopicsActivity extends Activity {
 			final int pos = position;
 			View v = convertView;
 			LayoutInflater li;
-			Log.d("APP", "Point_getView and position: " +  position + " , and count " + count );
 			if (convertView == null){
 				if (getItemViewType(position) == 0){
 					li = getLayoutInflater();
 					v = li.inflate(R.layout.topics_list_row_no_subtopics, null);
-					Log.d("APP", "Inflation 1");
 				}
 				else{
 					li = getLayoutInflater();
 					v = li.inflate(R.layout.topics_list_row_with_subtopics, null);
-					Log.d("APP", "Inflation 2");
 				}
-				Log.d("APP", "new inflation");
 			}
 			
 			TextView tName = (TextView) v.findViewById(R.id.topic_name);

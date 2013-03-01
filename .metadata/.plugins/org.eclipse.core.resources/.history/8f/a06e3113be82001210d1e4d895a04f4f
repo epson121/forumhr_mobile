@@ -1,0 +1,27 @@
+package com.example.fhr;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.os.Handler;
+
+public class Helper {
+	
+	 public static boolean isNetworkAvailable(Context ctx) {
+			ConnectivityManager connMgr = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+			if(connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected() ||
+				connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected()){
+					return true;
+			}	
+			return false;
+	  } 
+	 
+	 
+	 final static Handler exceptionHandler = new Handler();
+	 static Runnable exceptionAlert = new Runnable() {
+			
+			@Override
+			public void run() {
+				//show error alert dialog (preferably with reload button)
+			}
+		};
+}

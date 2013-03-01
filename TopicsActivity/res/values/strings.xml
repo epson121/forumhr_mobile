@@ -12,6 +12,7 @@
     <string name="description">topic description</string>
     <string name="subtopics">Subtopics</string>
     <string name="load_more">Load more</string>
+    <string name = "page_info">Page _ of _</string>
     
      <string name="post_username">Post username</string>
       <string name="post_date">Post date</string>
