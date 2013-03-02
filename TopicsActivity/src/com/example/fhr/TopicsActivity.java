@@ -79,19 +79,23 @@ public class TopicsActivity extends Activity {
 	        	ftp = new ForumTopicParser();
 	        	forumTopicList = ftp.getTopicList();
 	        	count = ftp.getCount();
-	        	throw new IOException();
 	        } 
 			catch(IOException e){
-				Helper h = new Helper(TopicsActivity.this, 1, null); 
-				reloadHandler.post(h);
-	        }       
-			return "";
+				return "";
+	        }
+			return "ok";
 		}
 		
 		@Override
 		protected void onPostExecute(String result) {
-			ImageAdapter adapter = new ImageAdapter();
-			topicList.setAdapter(adapter);
+			if (result.equals("ok")){
+				ImageAdapter adapter = new ImageAdapter();
+				topicList.setAdapter(adapter);
+			}
+			else{
+				Helper h = new Helper(TopicsActivity.this, 1, new String[] {"", "", ""}); 
+				reloadHandler.post(h);
+			}
 			if (progressDialog.isShowing()) {
 	            progressDialog.dismiss();
 	        }

@@ -1,5 +1,6 @@
 package com.example.fhr;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
@@ -21,6 +22,8 @@ public class Helper implements Runnable{
 	public void run() {
 		
 		bda = new BaseDialogActivity(c, 3, reloadId, reloadData);
+		AlertDialog adialog = (AlertDialog) bda.onCreateDialog();
+		adialog.show(); 
 	} 
 	 
 	public static boolean isNetworkAvailable(Context ctx) {
@@ -31,5 +34,7 @@ public class Helper implements Runnable{
 		}	
 		return false;
   }
+	
 
+	
 }

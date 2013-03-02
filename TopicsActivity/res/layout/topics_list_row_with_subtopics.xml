@@ -4,8 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:clickable="false"
-    android:padding="5dip" >
+	android:paddingTop="3dip"
+ >
 
     <!-- ListRow Left sied Thumbnail image -->
 
@@ -62,13 +62,15 @@
 
     <ImageView
         android:id="@+id/topic_options"
-        android:layout_width="15dip"
+        android:layout_width="25dip"
         android:layout_height="15dip"
+        android:layout_marginRight="0dp"
+        android:layout_alignBottom="@+id/thumbnail"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="7dp"
         android:layout_alignTop="@+id/topic_name"
         android:background="@drawable/textview_selector"
         android:contentDescription="@+string/description"
+        android:scaleType="center"
         android:src="@drawable/arrow_down" />
 
 </RelativeLayout>

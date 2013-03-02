@@ -82,14 +82,11 @@ public class ThreadsActivity extends Activity {
 				fthp = new ForumThreadParser(params[0][0]);
 				fth = fthp.getThreadList();
 				count = fthp.getCount();
-				return "ok";
 			} 
 			catch (Exception e) {
-				String[] reloadData = new String[]{topicUrl, topicName };
-				Helper h = new Helper(ThreadsActivity.this, 1, reloadData ); 
-				reloadHandler.post(h);
+				return "";
 			}
-			return "error";
+			return "ok";
 		}
 		
 		@Override
@@ -97,7 +94,9 @@ public class ThreadsActivity extends Activity {
 			if (result.equals("ok"))
 				threadList.setAdapter(new ThreadAdapter());
 			else{
-				//generate error alert dialog
+				String[] reloadData = new String[]{topicUrl, topicName, "" };
+				Helper h = new Helper(ThreadsActivity.this, 2, reloadData ); 
+				reloadHandler.post(h);
 			}
 
 			if (progressDialog.isShowing()) {
@@ -128,13 +127,16 @@ public class ThreadsActivity extends Activity {
 				return 0;
 			}
         	else{
-        		return 1;
+        		if (fth[position].numOfPages == 1)
+        			return 1;
+        		else
+        			return 2;
         	}
         }
 		
 		 @Override
 	        public int getViewTypeCount() {
-	         return 2; // Count of different layouts
+	         return 3; // Count of different layouts
 	        }
   
 		@Override
@@ -143,18 +145,22 @@ public class ThreadsActivity extends Activity {
 			final int pos = position;
 			if (v == null){
 				LayoutInflater li = getLayoutInflater();
-				if (getItemViewType(position) == 0){
+				switch (getItemViewType(position)) {
+				case 0:
 					v = li.inflate(R.layout.page_navigation, null);
 					Log.d("APP", "Inflated navigation");
-				}
-				else{
+					break;
+				case 1:
+					v = li.inflate(R.layout.threads_list_row_1_page, null);
+					break;
+				case 2:
 					v = li.inflate(R.layout.threads_list_row, null);
-					Log.d("APP", "THREAD new inflation");
+					break;
+				default:
+					break;
 				}
 			}
-			
 			if (position < getCount() - 1){
-				Log.d("APP", "POSITION IS: " + position);
 				TextView threadName = (TextView) v.findViewById(R.id.thread_name);
 				TextView threadAuthor = (TextView) v.findViewById(R.id.thread_author);
 				TextView threadLastPostInfo = (TextView) v.findViewById(R.id.thread_last_post_info);
@@ -168,10 +174,8 @@ public class ThreadsActivity extends Activity {
 					threadName.setText(fth[position].threadName);
 				threadAuthor.setText("By: " + fth[position].threadAuthor);
 				threadLastPostInfo.setText("Last post: " + fth[position].lastPostInfo);
-				Log.d("APP", fth[pos].threadUrl);
 				
 				threadName.setOnClickListener(new OnClickListener() {
-					
 					@Override
 					public void onClick(View v) {
 						Log.d("APP_ONCLICK", fth[pos].threadUrl);
@@ -180,20 +184,18 @@ public class ThreadsActivity extends Activity {
 						postActivity.putExtra("threadName", fth[pos].threadName);
 						postActivity.putExtra("threadNumOfPages", fth[pos].numOfPages);
 						startActivity(postActivity);
-						
 					}
 				});
-				
-				goToPage.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View arg0) {
-						bda = new BaseDialogActivity(ThreadsActivity.this, 2, fth[pos].numOfPages, fth[pos].threadUrl, topicName, 2);
-						AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
-						dialog.show();
-						//Toast.makeText(getApplicationContext(), "text", Toast.LENGTH_SHORT).show();
-					}
-				});
+				if (getItemViewType(position) == 2){
+					goToPage.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View arg0) {
+								bda = new BaseDialogActivity(ThreadsActivity.this, 2, fth[pos].numOfPages, fth[pos].threadUrl, topicName, 2);
+								AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
+								dialog.show();
+							}
+						});
+				}
 			}
 			else{
 				ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
@@ -241,7 +243,6 @@ public class ThreadsActivity extends Activity {
 					}
 				});
 			}
-			
 			return v;
 		}
 	}
@@ -266,7 +267,7 @@ public class ThreadsActivity extends Activity {
 			case 1:
 				int prevPage = currentPage - 1;
 				if (currentPage == 1){
-					return uri;
+					return url;
 				}
 				else{
 					return uri + "&page=" + prevPage;

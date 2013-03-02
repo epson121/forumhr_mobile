@@ -1,0 +1,35 @@
+package com.example.fhr;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+
+public class Helper implements Runnable{
+	
+	private Context c;
+	private int reloadId;
+	private String[] reloadData;
+	BaseDialogActivity bda;
+	
+	
+	public Helper(Context con, int reloadId, String[] reloadData){
+		c = con;
+		this.reloadData = reloadData;
+		this.reloadId = reloadId;
+	}
+	 
+	@Override
+	public void run() {
+		
+		bda = new BaseDialogActivity(c, 3, reloadId, reloadData);
+	} 
+	 
+	public static boolean isNetworkAvailable(Context ctx) {
+		ConnectivityManager connMgr = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if(connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected() ||
+			connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected()){
+				return true;
+		}	
+		return false;
+  }
+
+}

@@ -10,8 +10,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -48,7 +50,7 @@ public class BaseDialogActivity extends Activity {
 	}
 	
 	/*
-	 * context, id of dialog, stuff to reload (thread, topic, post)
+	 * context, id of dialog, activityId stuff to reload (thread, topic, post)
 	 */
 	public BaseDialogActivity(Context c, int id, int reloadId, String[] reloadData){
 		con = c;
@@ -152,6 +154,7 @@ public class BaseDialogActivity extends Activity {
 			.setCancelable(true);
 			return builder.create();
 		case 3:
+			
 			builder
             .setTitle("An error has occured..")
             .setCancelable(true)
@@ -160,7 +163,7 @@ public class BaseDialogActivity extends Activity {
                     dialog.dismiss();
                 }
             })
-            .setNeutralButton("Reload", new OnClickListener() {
+            .setPositiveButton("Reload", new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -170,29 +173,31 @@ public class BaseDialogActivity extends Activity {
 					 * 2. reload Thread
 					 * 3. reload Post
 					 */
+					Log.d("APP","RELOAD ID: " + reloadId);
 					switch(reloadId){
 						case 1:
+							Log.d("APP", con.toString());
 							reloadPage = new Intent(con, TopicsActivity.class);
-							startActivity(reloadPage);
-							finish();
+							con.startActivity(reloadPage);
+							break;
 						case 2:
 							reloadPage = new Intent(con, ThreadsActivity.class);
 							reloadPage.putExtra("topicUrl", reloadData[0]);
 							reloadPage.putExtra("topicName", reloadData[1]);	
-							startActivity(reloadPage);
-							finish();
+							con.startActivity(reloadPage);
+							break;
 						case 3:
 							reloadPage = new Intent(con, PostsActivity.class);
 							reloadPage.putExtra("threadUrl", reloadData[0]);
 							reloadPage.putExtra("threadName", reloadData[1]);
 							reloadPage.putExtra("threadNumOfPages", reloadData[2]);
-							startActivity(reloadPage);
-							finish();
+							con.startActivity(reloadPage);
 						default:
 							return;
 					}
 				}
-			});
+			})
+			.setCancelable(true);
 			return builder.create();
 		default:
 			return null;	

@@ -27,7 +27,9 @@
             android:layout_width="162dp"
             android:layout_height="match_parent"
             android:layout_weight="0.90"
-            android:gravity="center"
+            android:layout_marginLeft="4dip"
+            android:gravity="center|left"
+            android:textSize="15sp"
             android:text="@string/post_username" />
 
         <TextView
