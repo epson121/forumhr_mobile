@@ -1,0 +1,18 @@
+package fhr.dialogs;
+
+import android.app.Activity;
+import android.content.Context;
+
+public class ErrorDialog extends Activity{
+	
+	private Context con;
+	private int reloadId;
+	private String[] reloadData;
+	
+	public ErrorDialog(Context c, int id, int reloadId, String[] reloadData){
+		con = c;
+		this.reloadId = reloadId;
+		this.reloadData = reloadData; 
+	}
+
+}

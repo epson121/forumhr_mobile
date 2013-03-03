@@ -1,0 +1,5 @@
+package fhr.dialogs;
+
+public class ErrorDialog {
+
+}

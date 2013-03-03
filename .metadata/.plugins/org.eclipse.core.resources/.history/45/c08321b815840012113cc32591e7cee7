@@ -1,0 +1,60 @@
+package fhr.adapters;
+
+import fhr.entities.ForumThread;
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
+public class ThreadAdapter extends BaseAdapter {
+	
+	private Context con;
+	private int count = 0;
+	private ForumThread[] fth;
+	
+	public ThreadAdapter(Context c, int count, ForumThread[] fth){
+		this.con = c;
+		this.count = count;
+		this.fth = fth;
+	}
+
+	@Override
+	public int getCount() {
+		return count + 1;   
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return position;
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+	
+	public int getItemViewType(int position) {
+        // Define a way to determine which layout to use, here it's just evens and odds.
+       	if (position == getCount()-1){
+				return 0;
+			}
+       	else{
+       		if (fth[position].getNumOfPages() == 1)
+       			return 1;
+       		else
+       			return 2;
+       	}
+    }
+		
+	@Override
+    public int getViewTypeCount() {
+		return 3; // Count of different layouts
+    }
+
+	@Override
+	public View getView(int arg0, View arg1, ViewGroup arg2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,72 @@
+package fhr;
+
+
+public class ForumThread {
+
+	public static String TopicNumOfPages;
+	
+	private int id;
+	private String threadName;
+	private String threadUrl;
+	private String threadAuthor;
+	private int numOfPages;
+	private boolean isTop;
+	private String lastPostInfo;
+	
+	public ForumThread(){}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getThreadName() {
+		return threadName;
+	}
+
+	public void setThreadName(String threadName) {
+		this.threadName = threadName;
+	}
+
+	public String getThreadUrl() {
+		return threadUrl;
+	}
+
+	public void setThreadUrl(String threadUrl) {
+		this.threadUrl = threadUrl;
+	}
+
+	public String getThreadAuthor() {
+		return threadAuthor;
+	}
+
+	public void setThreadAuthor(String threadAuthor) {
+		this.threadAuthor = threadAuthor;
+	}
+
+	public int getNumOfPages() {
+		return numOfPages;
+	}
+
+	public void setNumOfPages(int numOfPages) {
+		this.numOfPages = numOfPages;
+	}
+
+	public boolean isTop() {
+		return isTop;
+	}
+
+	public void setTop(boolean isTop) {
+		this.isTop = isTop;
+	}
+
+	public String getLastPostInfo() {
+		return lastPostInfo;
+	}
+
+	public void setLastPostInfo(String lastPostInfo) {
+		this.lastPostInfo = lastPostInfo;
+	}
+}

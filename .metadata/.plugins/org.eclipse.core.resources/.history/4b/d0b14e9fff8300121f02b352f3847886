@@ -1,0 +1,26 @@
+package fhr.dialogs;
+
+import android.app.Activity;
+import android.content.Context;
+
+public class GoToPageDialog extends Activity{
+	
+	private Context con;
+	private int id;
+	private int pageNum;
+	private int maxNumPages;
+	private String Url;
+	private String name;
+	private int threadOrPost;
+	private int reloadId;
+	private String[] reloadData;
+	
+	
+	public GoToPageDialog() {
+		this.maxNumPages = maxNumPages;
+		this.Url = Url;
+		this.name = Name;
+		this.threadOrPost = threadOrPost;
+	}
+
+}

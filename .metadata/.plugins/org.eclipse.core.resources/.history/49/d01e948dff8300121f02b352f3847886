@@ -1,0 +1,14 @@
+package fhr.dialogs;
+
+import android.app.Activity;
+import android.content.Context;
+
+public class GoToPageDialog extends Activity{
+	
+	private Context con;
+	
+	public GoToPageDialog() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,32 @@
+package fhr.dialogs;
+
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+
+public class ThreadSubtopicsDialog extends Activity{
+	
+	public static createDialog(){
+		builder
+        .setTitle("Subtopics:")
+        .setItems(createThreadDialogList(), new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String url = urls[which];
+				Intent threadsActivity = new Intent("android.intent.action.FHR.THREAD.ACTIVITY");
+				threadsActivity.putExtra("topicUrl", url);
+				threadsActivity.putExtra("topicName", createThreadDialogList()[which]);	
+				con.startActivity(threadsActivity);
+			}
+		})
+        .setCancelable(true)
+        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+		return builder.create();
+	}
+
+}

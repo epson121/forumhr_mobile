@@ -1,0 +1,29 @@
+package fhr;
+
+public class ForumPost {
+
+	private String postAuthor;
+	private String postDate;
+	private String postText;
+	private String postHtml;
+	private String postAuthorAvatarPath;
+	
+	//getters and setters 
+	
+	public String getPostAuthor() {
+		return postAuthor;
+	}
+	public void setPostAuthor(String postAuthor) {
+		this.postAuthor = postAuthor;
+	}
+	
+	
+	public String getPostDate() {
+		return postDate;
+	}
+	public void setPostDate(String postDate) {
+		this.postDate = postDate;
+	}
+
+	
+}

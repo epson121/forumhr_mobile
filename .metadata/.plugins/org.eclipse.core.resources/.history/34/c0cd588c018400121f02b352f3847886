@@ -1,0 +1,74 @@
+package fhr.dialogs;
+
+import fhr.activities.PostsActivity;
+import fhr.activities.ThreadsActivity;
+import fhr.activities.TopicsActivity;
+import fhr.entities.ForumTopic;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.util.Log;
+
+public class BaseDialogActivity extends Activity {
+
+	
+	
+	private Context con;
+	private int id;
+	private int reloadId;
+	private String[] reloadData;
+	
+	private ThreadSubtopicsDialog tsd = null;
+	private GoToPageDialog gtpd = null;
+	private ErrorDialog ed = null;
+	
+	public BaseDialogActivity(Context c, ForumTopic ft) {
+		this.id = 1;
+		con = c;
+		tsd = new ThreadSubtopicsDialog(c, ft);
+	}
+	
+	//(context, id of dialog (look below), maximum number of pages in thread/post, urlOfThread/post
+	// name of thread/post, thread or post (1 | 2)
+	public BaseDialogActivity(Context c, int id, int maxNumPages, String Url, String Name, int threadOrPost) {
+		this.id = 2;
+		gtpd = new GoToPageDialog(c, maxNumPages, Url, Name, threadOrPost);
+	}
+	
+	/*
+	 * context, id of dialog, activityId stuff to reload (thread, topic, post)
+	 */
+	public BaseDialogActivity(Context c, int reloadId, String[] reloadData){
+		this.id = 3;
+		ed = new ErrorDialog(c, reloadId, reloadData);
+	}
+
+	
+	/*
+	 * 1 - Thread subtopics dialog
+	 * 2 - Topic "go to page" dialog
+	 * 3 - "An error has occured dialog"
+	 */
+	public Dialog onCreateDialog(){
+
+
+		switch(this.id){
+		case 1:
+			return tsd.createDialog();
+		
+		case 2:
+			return gtpd.createDialog();
+		case 3:
+			return ed.createDialog();
+		default:
+			return null;	
+		}
+		
+	}
+	
+}

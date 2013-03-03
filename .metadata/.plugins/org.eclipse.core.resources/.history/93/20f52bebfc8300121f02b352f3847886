@@ -1,0 +1,9 @@
+package fhr.dialogs;
+
+import android.app.Activity;
+
+public class ThreadSubtopicsDialog extends Activity{
+	
+	
+
+}

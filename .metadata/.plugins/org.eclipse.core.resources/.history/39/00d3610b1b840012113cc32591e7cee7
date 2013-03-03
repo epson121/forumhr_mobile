@@ -1,0 +1,7 @@
+package fhr.adapters;
+
+import android.widget.BaseAdapter;
+
+public class TopicAdapter extends BaseAdapter{
+
+}

@@ -1,0 +1,26 @@
+
+package fhr;
+
+import java.util.HashMap;
+
+public class ForumTopic {
+	
+	private String name;
+	private String uri;
+	private String description;
+	private HashMap<String, String> subTopics = new HashMap<String, String>();
+	
+	//add isFavorite
+	
+	public ForumTopic(){
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+}
