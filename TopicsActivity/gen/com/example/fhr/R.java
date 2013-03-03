@@ -85,8 +85,9 @@ public final class R {
         public static final int test_layout=0x7f03000a;
         public static final int threads_list_row=0x7f03000b;
         public static final int threads_list_row_1_page=0x7f03000c;
-        public static final int topics_list_row_no_subtopics=0x7f03000d;
-        public static final int topics_list_row_with_subtopics=0x7f03000e;
+        public static final int topics_list_row=0x7f03000d;
+        public static final int topics_list_row_no_subtopics=0x7f03000e;
+        public static final int topics_list_row_with_subtopics=0x7f03000f;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
