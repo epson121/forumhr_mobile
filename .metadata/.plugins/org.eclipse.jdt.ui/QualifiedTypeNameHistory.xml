@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.Iterator"/>
-<fullyQualifiedTypeName name="java.util.Map"/>
-<fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="android.content.DialogInterface"/>
-<fullyQualifiedTypeName name="android.widget.EditText"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
-<fullyQualifiedTypeName name="android.view.View"/>
-<fullyQualifiedTypeName name="java.util.zip.Inflater"/>
-<fullyQualifiedTypeName name="com.example.fhr.PostActivity"/>
 <fullyQualifiedTypeName name="com.example.fhr.ForumPost"/>
 <fullyQualifiedTypeName name="android.os.AsyncTask"/>
 <fullyQualifiedTypeName name="com.example.fhr.ForumPostParser"/>
-<fullyQualifiedTypeName name="android.widget.BaseAdapter"/>
 <fullyQualifiedTypeName name="android.text.Html"/>
 <fullyQualifiedTypeName name="android.widget.ListView"/>
 <fullyQualifiedTypeName name="android.webkit.WebView"/>
@@ -25,7 +15,6 @@
 <fullyQualifiedTypeName name="android.view.Window"/>
 <fullyQualifiedTypeName name="components.ProgressDialog"/>
 <fullyQualifiedTypeName name="android.widget.ProgressBar"/>
-<fullyQualifiedTypeName name="android.view.LayoutInflater"/>
 <fullyQualifiedTypeName name="android.widget.ImageButton"/>
 <fullyQualifiedTypeName name="android.widget.ImageView"/>
 <fullyQualifiedTypeName name="com.example.fhr.ForumThreadParser"/>
@@ -44,7 +33,6 @@
 <fullyQualifiedTypeName name="android.os.Handler"/>
 <fullyQualifiedTypeName name="com.example.fhr.PostsActivity"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="com.example.fhr.R.layout"/>
 <fullyQualifiedTypeName name="com.example.fhr.R.id"/>
@@ -52,12 +40,24 @@
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.content.DialogInterface.OnClickListener"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
-<fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="fhr.dialogs.ThreadSubtopicsDialog"/>
 <fullyQualifiedTypeName name="fhr.dialogs.GoToPageDialog"/>
 <fullyQualifiedTypeName name="android.app.Activity"/>
-<fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog.Builder"/>
 <fullyQualifiedTypeName name="fhr.dialogs.ErrorDialog"/>
+<fullyQualifiedTypeName name="fhr.activities.ThreadsActivity.ThreadAdapter"/>
+<fullyQualifiedTypeName name="fhr.activities.ThreadsActivity"/>
+<fullyQualifiedTypeName name="fhr.adapters.ThreadAdapter"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="android.widget.BaseAdapter"/>
+<fullyQualifiedTypeName name="fhr.adapters.TopicAdapter"/>
+<fullyQualifiedTypeName name="fhr.activities.TopicsActivity"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="android.view.LayoutInflater"/>
+<fullyQualifiedTypeName name="fhr.activities.Helper"/>
+<fullyQualifiedTypeName name="fhr.adapters.PostAdapter"/>
+<fullyQualifiedTypeName name="fhr.activities.PostsActivity"/>
 </qualifiedTypeNameHistroy>
