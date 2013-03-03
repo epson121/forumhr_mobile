@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:paddingTop= "3dip"
+    android:paddingLeft="5dip"
     >
     
     <LinearLayout android:id="@+id/thumbnail"

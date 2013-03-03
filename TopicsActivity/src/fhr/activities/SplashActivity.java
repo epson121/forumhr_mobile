@@ -1,6 +1,6 @@
 package fhr.activities;
 
-import fhr.R;
+import com.example.fhr.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 public class SplashActivity extends Activity{
 
-	
 	  public void onCreate(Bundle savedInstanceState) 
 	    {
 	        super.onCreate(savedInstanceState);
@@ -20,7 +19,6 @@ public class SplashActivity extends Activity{
 	        
 	        final Handler noInternetHandler = new Handler();
 	        final Runnable showMessage = new Runnable() {
-				
 				@Override
 				public void run() {
 					Toast.makeText(getApplicationContext(), "Internet connection not available.", Toast.LENGTH_SHORT).show();

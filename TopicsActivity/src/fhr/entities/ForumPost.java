@@ -7,16 +7,13 @@ public class ForumPost {
 	private String postText;
 	private String postHtml;
 	private String postAuthorAvatarPath;
-	
-	//getters and setters 
-	
+
 	public String getPostAuthor() {
 		return postAuthor;
 	}
 	public void setPostAuthor(String postAuthor) {
 		this.postAuthor = postAuthor;
 	}
-	
 	
 	public String getPostDate() {
 		return postDate;
@@ -25,7 +22,6 @@ public class ForumPost {
 		this.postDate = postDate;
 	}
 	
-	
 	public String getPostText() {
 		return postText;
 	}
@@ -33,14 +29,12 @@ public class ForumPost {
 		this.postText = postText;
 	}
 	
-	
 	public String getPostHtml() {
 		return postHtml;
 	}
 	public void setPostHtml(String postHtml) {
 		this.postHtml = postHtml;
 	}
-	
 	
 	public String getPostAuthorAvatarPath() {
 		return postAuthorAvatarPath;

@@ -1,6 +1,7 @@
 package fhr.adapters;
 
-import fhr.R;
+import com.example.fhr.R;
+
 import fhr.activities.Helper;
 import fhr.activities.PostsActivity;
 import fhr.activities.ThreadsActivity;
@@ -9,7 +10,6 @@ import fhr.entities.ForumThread;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +22,11 @@ import android.widget.TextView;
 public class ThreadAdapter extends BaseAdapter {
 	
 	private Context con;
-	private int count = 0;
 	private ForumThread[] fth;
 	private BaseDialogActivity bda;
-	private String topicName;
-	private String topicUrl;
-	private int currentPage;
+	
+	private String topicName, topicUrl;
+	private int currentPage, count = 0;
 	
 	public ThreadAdapter(Context c, int count, ForumThread[] fth, String topicName, String topicUrl, int currentPage){
 		this.con = c;
@@ -54,10 +53,9 @@ public class ThreadAdapter extends BaseAdapter {
 	}
 	
 	public int getItemViewType(int position) {
-        // Define a way to determine which layout to use, here it's just evens and odds.
        	if (position == getCount()-1){
 				return 0;
-			}
+		}
        	else{
        		if (fth[position].getNumOfPages() == 1)
        			return 1;
@@ -65,22 +63,22 @@ public class ThreadAdapter extends BaseAdapter {
        			return 2;
        	}
     }
-		
+	// Count of different layouts
 	@Override
     public int getViewTypeCount() {
-		return 3; // Count of different layouts
+		return 3; 
     }
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 		final int pos = position;
+		
 		if (v == null){
 			LayoutInflater li = LayoutInflater.from(con);
 			switch (getItemViewType(position)) {
 			case 0:
 				v = li.inflate(R.layout.page_navigation, null);
-				Log.d("APP", "Inflated navigation");
 				break;
 			case 1:
 				v = li.inflate(R.layout.threads_list_row_1_page, null);
@@ -92,25 +90,24 @@ public class ThreadAdapter extends BaseAdapter {
 				break;
 			}
 		}
+		
 		if (position < getCount() - 1){
 			TextView threadName = (TextView) v.findViewById(R.id.thread_name);
 			TextView threadAuthor = (TextView) v.findViewById(R.id.thread_author);
 			TextView threadLastPostInfo = (TextView) v.findViewById(R.id.thread_last_post_info);
 			ImageButton goToPage = (ImageButton) v.findViewById(R.id.thread_go_to_page);
 			
-			//ImageButton favThread = (ImageButton) findViewById(R.id.thread_favorite);
-
 			if (fth[position].isTop())
 				threadName.setText("TOP " + fth[position].getThreadName());
 			else
 				threadName.setText(fth[position].getThreadName());
+			
 			threadAuthor.setText("By: " + fth[position].getThreadAuthor());
 			threadLastPostInfo.setText("Last post: " + fth[position].getLastPostInfo());
 			
 			threadName.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Log.d("APP_ONCLICK", fth[pos].getThreadUrl());
 					Intent postActivity = new Intent(con, PostsActivity.class);
 					postActivity.putExtra("threadUrl", fth[pos].getThreadUrl());
 					postActivity.putExtra("threadName", fth[pos].getThreadName());
@@ -126,19 +123,18 @@ public class ThreadAdapter extends BaseAdapter {
 							AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
 							dialog.show();
 						}
-					});
+				});
 			}
 		}
 		else{
 			ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
 			ImageView findPage = (ImageView) v.findViewById(R.id.post_find_page);
 			ImageView nextPage = (ImageView) v.findViewById(R.id.post_next_page);
-			TextView pageInfo = (TextView) v.findViewById(R.id.page_info);
+			TextView  pageInfo = (TextView)  v.findViewById(R.id.page_info);
 			
 			pageInfo.setText("page " + currentPage + " of " + ForumThread.TopicNumOfPages);
 			
 			prevPage.setOnClickListener(new OnClickListener() {
-				
 				@Override
 				public void onClick(View v) {
 					Intent goToPrevPage = new Intent(con, ThreadsActivity.class);
@@ -149,22 +145,18 @@ public class ThreadAdapter extends BaseAdapter {
 			});
 			
 			findPage.setOnClickListener(new OnClickListener() {
-				
 				@Override
 				public void onClick(View v) {
-					bda = new BaseDialogActivity(con, 
-												 Integer.parseInt(ForumThread.TopicNumOfPages),
-												 Helper.getUri(topicUrl, 3)[0],
-												 topicName,
-												 1
-												 );
+					bda = new BaseDialogActivity(
+						  con, Integer.parseInt(ForumThread.TopicNumOfPages),
+						  Helper.getUri(topicUrl, 3)[0], topicName, 1 
+						  );
 					AlertDialog dialog = (AlertDialog) bda.onCreateDialog();
 					dialog.show();
 				}
 			});
 			
 			nextPage.setOnClickListener(new OnClickListener() {
-				
 				@Override
 				public void onClick(View v) {
 					Intent goToNextPage = new Intent(con, ThreadsActivity.class);
@@ -176,12 +168,4 @@ public class ThreadAdapter extends BaseAdapter {
 		}
 		return v;
 	}
-	
-	/*
-	 * 1 -> previous page
-	 * 2 -> next page
-	 * 3 -> entered page
-	 */
-	
-
 }

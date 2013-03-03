@@ -1,6 +1,7 @@
 package fhr.activities;
 
-import fhr.R;
+import com.example.fhr.R;
+
 import fhr.adapters.PostAdapter;
 import fhr.entities.ForumPost;
 import fhr.parsers.ForumPostParser;
@@ -25,18 +26,18 @@ public class PostsActivity extends Activity {
 	
 	private Handler reloadHandler;
 	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post);
+		
+		reloadHandler = new Handler();
+		
 		Bundle b = getIntent().getExtras();
 		threadName = b.getString("threadName");
 		threadUri =  b.getString("threadUrl");
 		threadNumOfPages = b.getInt("threadNumOfPages");
-		
-		reloadHandler = new Handler();
-		
+				
 		if (threadUri.contains("&page=")){
 			cleanUri = threadUri.split("&page=")[0];
 			currentPage = Integer.parseInt(threadUri.split("&page=")[1]);
@@ -46,6 +47,7 @@ public class PostsActivity extends Activity {
 		}
 		setTitle(threadName);
 		postList = (ListView) findViewById(R.id.posts_feed);
+		
 		if (Helper.isNetworkAvailable(PostsActivity.this)){
 			new Async(PostsActivity.this).execute(threadUri);	
 		}
@@ -57,12 +59,8 @@ public class PostsActivity extends Activity {
 	private class Async extends AsyncTask<String, Void, String>{
 		
 		private ProgressDialog progressDialog;
-		private Activity act;
-		private Context con;
 		
-		public Async(Activity a) {
-			this.act = a;
-			con = this.act;
+		public Async(Context con) {
 			progressDialog = new ProgressDialog(con);
 		}
 		
@@ -70,7 +68,7 @@ public class PostsActivity extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressDialog.setMessage("Loading..");
-			progressDialog.setCancelable(false);
+			progressDialog.setCancelable(true);
 			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 		}
@@ -92,8 +90,11 @@ public class PostsActivity extends Activity {
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if (result.equals("ok")){
-				PostAdapter ad = new PostAdapter(PostsActivity.this, count, fpl, threadName, threadUri, threadNumOfPages,
-												 currentPage, cleanUri);
+				PostAdapter ad = new PostAdapter(
+								 PostsActivity.this, count, fpl,
+								 threadName, threadUri, threadNumOfPages, 
+								 currentPage, cleanUri
+								 );
 				postList.setAdapter(ad);
 			}
 			else{

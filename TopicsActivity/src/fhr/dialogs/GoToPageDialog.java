@@ -1,6 +1,7 @@
 package fhr.dialogs;
 
-import fhr.R;
+import com.example.fhr.R;
+
 import fhr.activities.PostsActivity;
 import fhr.activities.ThreadsActivity;
 import android.app.Activity;
@@ -18,13 +19,10 @@ public class GoToPageDialog extends Activity{
 	
 	private AlertDialog.Builder builder;
 	private Context con;
-	private int maxNumPages;
-	private String Url;
-	private String name;
-	private int threadOrPost;
+	
+	private int maxNumPages, threadOrPost;
+	private String Url, name;
 
-	
-	
 	public GoToPageDialog(Context c, int maxNumPages, String Url, String Name, int threadOrPost) {
 		this.con = c;
 		this.maxNumPages = maxNumPages;
@@ -37,18 +35,15 @@ public class GoToPageDialog extends Activity{
 		builder = new Builder(con);
 		
 		LayoutInflater inflater = ((Activity) con).getLayoutInflater();
-		
-		View addNumber = inflater.inflate(R.layout.dialog_go_to_page, null);
+		View goToPage = inflater.inflate(R.layout.dialog_go_to_page, null);
 
-        final EditText pNum = (EditText) addNumber.findViewById(R.id.page_number);
+        final EditText pNum = (EditText) goToPage.findViewById(R.id.page_number);
 		builder
 		.setTitle("Go to page (1 - " + maxNumPages + ") :")
-		.setView(addNumber)
+		.setView(goToPage)
 		.setPositiveButton("Go", new DialogInterface.OnClickListener() {
-			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				//check for exceptions !!!
 				String txt = pNum.getText().toString();
 				if (!txt.equals("")){
 					int pageNum = Integer.parseInt(txt);

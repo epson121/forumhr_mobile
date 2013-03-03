@@ -1,6 +1,8 @@
 package fhr.adapters;
 
-import fhr.R;
+import com.example.fhr.R;
+
+import fhr.activities.ThreadsActivity;
 import fhr.dialogs.BaseDialogActivity;
 import fhr.entities.ForumTopic;
 import android.app.AlertDialog;
@@ -52,7 +54,6 @@ public class TopicAdapter extends BaseAdapter{
     		return 1;
     	}
     }
-	
 	 // Count of different layouts
     @Override
     public int getViewTypeCount() {
@@ -85,7 +86,7 @@ public class TopicAdapter extends BaseAdapter{
 		tName.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-					Intent threadsActivity = new Intent("android.intent.action.FHR.THREAD.ACTIVITY");
+					Intent threadsActivity = new Intent(con, ThreadsActivity.class);
 					threadsActivity.putExtra("topicUrl", forumTopicList[pos].getUri());
 					threadsActivity.putExtra("topicName", forumTopicList[pos].getName());	
 					con.startActivity(threadsActivity);
@@ -102,6 +103,7 @@ public class TopicAdapter extends BaseAdapter{
 				}
 			});
 		}
+		
 		return v;
 	}
 

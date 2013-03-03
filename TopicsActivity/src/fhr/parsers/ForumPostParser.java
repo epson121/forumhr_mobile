@@ -10,18 +10,13 @@ import org.jsoup.select.Elements;
 
 import fhr.entities.ForumPost;
 
-
-
 public class ForumPostParser {
 
 	private Document doc;
 	private Elements  postList;
 	
-	//catch socket timeout connection
-	
 	public ForumPostParser(String threadUri) throws IOException{
 		doc = Jsoup.connect(threadUri).get();
-		//postList = doc.getElementById("posts").select("table[id~=post[0-9]+");
 		Element th_list = doc.getElementById("posts");
 		if (th_list == null){
 			threadUri = threadUri.replace("show.hr/forum", "forum.hr");
@@ -31,7 +26,6 @@ public class ForumPostParser {
 		else{
 			postList = th_list.select("div[id~=edit[0-9]+");
 		}
-		
 	}
 		
 	public int getSize(){
@@ -88,8 +82,8 @@ public class ForumPostParser {
 					wholeText = wholeText.replace(elem.text(), "<quote>" + elem.text() + "</quote>").replace("Quote:", "");
 				}
 			}
-		
-			//probat parse sa regexom (?:<quote>.+</quote>.+)*
+			
+			// get text
 			fp.setPostText(wholeText);
 			
 			//get HTML

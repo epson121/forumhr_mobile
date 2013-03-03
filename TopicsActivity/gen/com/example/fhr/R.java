@@ -12,35 +12,28 @@ public final class R {
     }
     public static final class drawable {
         public static final int arrow_down=0x7f020000;
-        public static final int arrow_down_tall=0x7f020001;
-        public static final int big_logo=0x7f020002;
-        public static final int find_page=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int img_border_top=0x7f020005;
-        public static final int main_icon=0x7f020006;
-        public static final int next_page=0x7f020007;
+        public static final int big_logo=0x7f020001;
+        public static final int find_page=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int img_border_top=0x7f020004;
+        public static final int next_page=0x7f020005;
         /** custom color for pressed state 
          */
-        public static final int normal_color=0x7f02001b;
-        public static final int post_icon_bw=0x7f020008;
-        public static final int post_icon_bw_small=0x7f020009;
-        public static final int pressed_color=0x7f02001a;
-        public static final int prev_page=0x7f02000a;
-        public static final int reload_icon=0x7f02000b;
-        public static final int separator_v=0x7f02000c;
-        public static final int settings_icon_bw=0x7f02000d;
-        public static final int splash=0x7f02000e;
-        public static final int star_icon_empty=0x7f02000f;
-        public static final int star_icon_full=0x7f020010;
-        public static final int subtopics_icon=0x7f020011;
-        public static final int textview_selector=0x7f020012;
-        public static final int thread_arrow_bw=0x7f020013;
-        public static final int thread_arrow_bw_small=0x7f020014;
-        public static final int thread_icon_bw=0x7f020015;
-        public static final int topic_icon_2_bw=0x7f020016;
-        public static final int topic_icon_bw=0x7f020017;
-        public static final int topic_icon_closed=0x7f020018;
-        public static final int topic_thread_red=0x7f020019;
+        public static final int normal_color=0x7f020014;
+        public static final int post_icon_bw=0x7f020006;
+        public static final int post_icon_bw_small=0x7f020007;
+        public static final int pressed_color=0x7f020013;
+        public static final int prev_page=0x7f020008;
+        public static final int separator_v=0x7f020009;
+        public static final int splash=0x7f02000a;
+        public static final int star_icon_empty=0x7f02000b;
+        public static final int star_icon_full=0x7f02000c;
+        public static final int subtopics_icon=0x7f02000d;
+        public static final int textview_selector=0x7f02000e;
+        public static final int thread_arrow_bw=0x7f02000f;
+        public static final int thread_arrow_bw_small=0x7f020010;
+        public static final int thread_icon_bw=0x7f020011;
+        public static final int topic_icon_2_bw=0x7f020012;
     }
     public static final class id {
         public static final int error_message=0x7f07000a;
@@ -85,9 +78,8 @@ public final class R {
         public static final int test_layout=0x7f03000a;
         public static final int threads_list_row=0x7f03000b;
         public static final int threads_list_row_1_page=0x7f03000c;
-        public static final int topics_list_row=0x7f03000d;
-        public static final int topics_list_row_no_subtopics=0x7f03000e;
-        public static final int topics_list_row_with_subtopics=0x7f03000f;
+        public static final int topics_list_row_no_subtopics=0x7f03000d;
+        public static final int topics_list_row_with_subtopics=0x7f03000e;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;

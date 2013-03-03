@@ -11,8 +11,7 @@ public class Helper implements Runnable{
 	private Context c;
 	private int reloadId;
 	private String[] reloadData;
-	BaseDialogActivity bda;
-	
+	private BaseDialogActivity bda;
 	
 	public Helper(Context con, int reloadId, String[] reloadData){
 		c = con;
@@ -22,7 +21,6 @@ public class Helper implements Runnable{
 	 
 	@Override
 	public void run() {
-		
 		bda = new BaseDialogActivity(c, reloadId, reloadData);
 		AlertDialog adialog = (AlertDialog) bda.onCreateDialog();
 		adialog.show(); 
@@ -35,7 +33,7 @@ public class Helper implements Runnable{
 				return true;
 		}	
 		return false;
-  }
+	}
 	
 	public static String[] getUri(String url, int task){
 		String uri;

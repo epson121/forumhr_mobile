@@ -2,8 +2,10 @@ package fhr.activities;
 
 import java.io.IOException;
 
+import com.example.fhr.R;
 
-import fhr.R;
+
+
 import fhr.adapters.TopicAdapter;
 import fhr.entities.ForumTopic;
 import fhr.parsers.ForumTopicParser;
@@ -19,11 +21,12 @@ import android.widget.Toast;
 
 public class TopicsActivity extends Activity {
 	
-	ListView topicList;
-	private int count = 0;
+	private ListView topicList;
 	private ForumTopicParser ftp = null;
 	private ForumTopic[] forumTopicList;
-	Handler reloadHandler;
+	private int count = 0;
+	
+	private Handler reloadHandler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -41,22 +44,12 @@ public class TopicsActivity extends Activity {
 		}
 		
 	}
-	
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		TopicsActivity.this.finish();
-	}
 
 	private class Async extends AsyncTask<String, Void, String>{
 		
 		private ProgressDialog progressDialog;
-
-		private Activity act;
-		private Context con;
-		public Async(Activity a) {
-			this.act = a;
-			con = this.act;
+		
+		public Async(Context con) {
 			progressDialog = new ProgressDialog(con);
 		}
 		
@@ -64,7 +57,7 @@ public class TopicsActivity extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressDialog.setMessage("Loading..");
-			progressDialog.setCancelable(false);
+			progressDialog.setCancelable(true);
 			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 		}
@@ -89,7 +82,7 @@ public class TopicsActivity extends Activity {
 				topicList.setAdapter(adapter);
 			}
 			else{
-				Helper h = new Helper(TopicsActivity.this, 1, new String[] {"", "", ""}); 
+				Helper h = new Helper(TopicsActivity.this, 1, null); 
 				reloadHandler.post(h);
 			}
 			if (progressDialog.isShowing()) {

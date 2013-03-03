@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import fhr.activities.ThreadsActivity;
 import fhr.entities.ForumTopic;
 
 import android.app.Activity;
@@ -27,6 +28,7 @@ public class ThreadSubtopicsDialog extends Activity{
 	
 	}
 	
+	// creates two string arrays (keys and urls) from hashmap
 	@SuppressWarnings("rawtypes")
 	private String[] createThreadDialogList(){
 		String[] keys = null;
@@ -51,11 +53,10 @@ public class ThreadSubtopicsDialog extends Activity{
 		builder
         .setTitle("Subtopics:")
         .setItems(createThreadDialogList(), new DialogInterface.OnClickListener() {
-			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String url = urls[which];
-				Intent threadsActivity = new Intent("android.intent.action.FHR.THREAD.ACTIVITY");
+				Intent threadsActivity = new Intent(con, ThreadsActivity.class);
 				threadsActivity.putExtra("topicUrl", url);
 				threadsActivity.putExtra("topicName", createThreadDialogList()[which]);	
 				con.startActivity(threadsActivity);

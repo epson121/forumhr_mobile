@@ -1,7 +1,7 @@
 package fhr.activities;
 
+import com.example.fhr.R;
 
-import fhr.R;
 import fhr.adapters.ThreadAdapter;
 import fhr.entities.ForumThread;
 import fhr.parsers.ForumThreadParser;
@@ -12,36 +12,35 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class ThreadsActivity extends Activity {
 	
 	private ListView threadList;
-	protected String topicUrl;
-	protected String topicName;
 	protected ForumThreadParser fthp, moreFthp;
 	protected ForumThread[] fth;
-	protected int count;
-	private int currentPage;
+	
+	protected int count, currentPage;
+	protected String topicUrl, topicName;
+	
 	private Handler reloadHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_thread);
-		final Bundle b = getIntent().getExtras();
 		
 		reloadHandler = new Handler();
 		
+		final Bundle b = getIntent().getExtras();
 		topicUrl = b.getString("topicUrl");
 		topicName = b.getString("topicName");
-		String[] res = Helper.getUri(topicUrl, 3);
-		currentPage = Integer.parseInt(res[1]);
 		setTitle(topicName);
 		
+		currentPage = Integer.parseInt( Helper.getUri(topicUrl, 3)[1]);
 		threadList = (ListView) findViewById(R.id.threads_feed);
+		
 		if (Helper.isNetworkAvailable(ThreadsActivity.this)){
 			new Async(ThreadsActivity.this).execute(new String[] {topicUrl, topicName});
 		}
@@ -53,12 +52,8 @@ public class ThreadsActivity extends Activity {
 	private class Async extends AsyncTask<String[], Void, String>{
 		
 		private ProgressDialog progressDialog;
-		private Activity act;
-		private Context con;
-		
-		public Async(Activity a) {
-			this.act = a;
-			con = this.act;
+
+		public Async(Context con) {
 			progressDialog = new ProgressDialog(con);
 		}
 		
@@ -66,7 +61,7 @@ public class ThreadsActivity extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressDialog.setMessage("Loading..");
-			progressDialog.setCancelable(false);
+			progressDialog.setCancelable(true);
 			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 		}
@@ -87,11 +82,10 @@ public class ThreadsActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			if (result.equals("ok")){
-				Log.d("APP", "CURR PAGE  " + currentPage);
 				threadList.setAdapter(new ThreadAdapter(ThreadsActivity.this, count, fth, topicName, topicUrl, currentPage));
 			}
 			else{
-				String[] reloadData = new String[]{topicUrl, topicName, "" };
+				String[] reloadData = new String[]{topicUrl, topicName };
 				Helper h = new Helper(ThreadsActivity.this, 2, reloadData ); 
 				reloadHandler.post(h);
 			}

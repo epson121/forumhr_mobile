@@ -1,6 +1,7 @@
 package fhr.adapters;
 
-import fhr.R;
+import com.example.fhr.R;
+
 import fhr.activities.Helper;
 import fhr.activities.PostsActivity;
 import fhr.dialogs.BaseDialogActivity;
@@ -20,14 +21,16 @@ import android.widget.TextView;
 public class PostAdapter extends BaseAdapter {
 
 	private Context con;
-	private int counter;
 	private ForumPost[] fpl;
 	private BaseDialogActivity bda;
-	private String threadName, threadUri, cleanUri;
-	private int currentPage, threadNumOfPages;
 	
-	public PostAdapter(Context c, int counter, ForumPost[] fpl, String threadName, String threadUri,
-					   						   int threadNumOfPages, int currentPage, String cleanUri){
+	private String threadName, threadUri, cleanUri;
+	private int currentPage, threadNumOfPages, counter;
+	
+	public PostAdapter(Context c, int counter, ForumPost[] fpl, String threadName, 
+					   String threadUri, int threadNumOfPages, int currentPage, 
+					   String cleanUri
+					   ){
 		this.con = c;
 		this.counter = counter;
 		this.fpl = fpl;
@@ -61,7 +64,6 @@ public class PostAdapter extends BaseAdapter {
     		return 1;
     	}
     }
-
 	// Count of different layouts
     @Override
     public int getViewTypeCount() {
@@ -92,7 +94,6 @@ public class PostAdapter extends BaseAdapter {
 			username.setText(fpl[position-1].getPostAuthor());
 			date.setText(fpl[position-1].getPostDate());
 			postText.loadDataWithBaseURL("", fpl[position-1].getPostHtml(), null, "UTF-8", "");
-
 		}
 		else{
 			ImageView prevPage = (ImageView) v.findViewById(R.id.post_prev_page);
@@ -102,7 +103,6 @@ public class PostAdapter extends BaseAdapter {
 			
 			pageInfo.setText("page " + currentPage + " of " + threadNumOfPages);
 			prevPage.setOnClickListener(new OnClickListener() {
-				
 				@Override
 				public void onClick(View v) {
 					Intent goToPrevPage = new Intent(con, PostsActivity.class);

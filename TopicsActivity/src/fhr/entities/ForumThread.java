@@ -25,7 +25,6 @@ public class ForumThread {
 	public String getThreadName() {
 		return threadName;
 	}
-
 	public void setThreadName(String threadName) {
 		this.threadName = threadName;
 	}
@@ -33,7 +32,6 @@ public class ForumThread {
 	public String getThreadUrl() {
 		return threadUrl;
 	}
-
 	public void setThreadUrl(String threadUrl) {
 		this.threadUrl = threadUrl;
 	}
@@ -41,7 +39,6 @@ public class ForumThread {
 	public String getThreadAuthor() {
 		return threadAuthor;
 	}
-
 	public void setThreadAuthor(String threadAuthor) {
 		this.threadAuthor = threadAuthor;
 	}
@@ -49,7 +46,6 @@ public class ForumThread {
 	public int getNumOfPages() {
 		return numOfPages;
 	}
-
 	public void setNumOfPages(int numOfPages) {
 		this.numOfPages = numOfPages;
 	}
@@ -57,7 +53,6 @@ public class ForumThread {
 	public boolean isTop() {
 		return isTop;
 	}
-
 	public void setTop(boolean isTop) {
 		this.isTop = isTop;
 	}
@@ -65,7 +60,6 @@ public class ForumThread {
 	public String getLastPostInfo() {
 		return lastPostInfo;
 	}
-
 	public void setLastPostInfo(String lastPostInfo) {
 		this.lastPostInfo = lastPostInfo;
 	}
