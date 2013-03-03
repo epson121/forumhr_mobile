@@ -1,4 +1,4 @@
-package com.example.fhr;
+package parsers;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.example.fhr.ForumPost;
 
 
 public class ForumPostParser {
@@ -49,7 +50,7 @@ public class ForumPostParser {
 			
 			//first <tr> is the date
 			//time of the post
-			fp.postDate = ite.next().text().split("#")[0];
+			fp.setPostAuthor(ite.next().text().split("#")[0]);
 			
 			//get part of the post where name and text are located (<tr>)
 			Elements secondTR = ite.next().getElementsByTag("td");

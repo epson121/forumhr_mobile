@@ -1,4 +1,4 @@
-package com.example.fhr;
+package parsers;
 
 import java.io.IOException;
 import java.util.Iterator;

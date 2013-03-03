@@ -7,6 +7,5 @@ public class ForumPost {
 	protected String postText;
 	protected String postHtml;
 	protected String postAuthorAvatarPath;
-
 	
 }
