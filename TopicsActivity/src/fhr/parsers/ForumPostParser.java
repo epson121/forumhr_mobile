@@ -86,6 +86,8 @@ public class ForumPostParser {
 			// get text
 			fp.setPostText(wholeText);
 			
+			a.select("a[rel=nofollow]").remove();
+			
 			//get HTML
 			String wholeHtml = a.html();
 			fp.setPostHtml(wholeHtml);
