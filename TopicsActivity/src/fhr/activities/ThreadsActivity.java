@@ -12,6 +12,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -74,6 +75,8 @@ public class ThreadsActivity extends Activity {
 				count = fthp.getCount();
 			} 
 			catch (Exception e) {
+				e.printStackTrace();
+				Log.e("APP", e.getMessage());
 				return "";
 			}
 			return "ok";
@@ -93,6 +96,5 @@ public class ThreadsActivity extends Activity {
 	            progressDialog.dismiss();
 	        }
 		}
-		
 	}	
 }

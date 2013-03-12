@@ -99,27 +99,20 @@ public class PostsActivity extends Activity {
 			return "ok";
 		}
 		
+		int position;
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if (result.equals("ok")){
-				/*
-				PostAdapter ad = new PostAdapter(
-								 PostsActivity.this, count, fpl,
-								 threadName, threadUri, threadNumOfPages, 
-								 currentPage, cleanUri
-								 );
-				postList.setAdapter(ad);
-				*/
 				
 				LinearLayout l1 = (LinearLayout) findViewById(R.id.ll_posts);
 				
-				for (int position = 0; position < count+2; position++){
+				for (position = 0; position < count+2; position++){
 					
 					if (position > 0 && position < count+1){
 						View v = getLayoutInflater().inflate(R.layout.post_list_row_2, null);
 					
-						TextView username = (TextView) v.findViewById(R.id.post_username_text);
+						final TextView username = (TextView) v.findViewById(R.id.post_username_text);
 						TextView date = (TextView) v.findViewById(R.id.post_date_text);
 						WebView postText = (WebView) v.findViewById(R.id.post_text);
 
@@ -127,6 +120,17 @@ public class PostsActivity extends Activity {
 						date.setText(fpl[position-1].getPostDate());
 						postText.loadDataWithBaseURL("", fpl[position-1].getPostHtml(), null, "UTF-8", "");
 						l1.addView(v);
+						
+						username.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								Intent userInfo = new Intent(PostsActivity.this, UserInfoActivity.class);
+								userInfo.putExtra("userUsername", username.getText());
+								userInfo.putExtra("userUri", fpl[position-1].getPostAuthorUri());
+								startActivity(userInfo);
+							}
+						});
 					}
 					else{
 						

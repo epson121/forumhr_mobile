@@ -10,6 +10,7 @@ import fhr.entities.ForumThread;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class ThreadAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return count + 1;   
+		return count;   
 	}
 
 	@Override
@@ -53,6 +54,8 @@ public class ThreadAdapter extends BaseAdapter {
 	}
 	
 	public int getItemViewType(int position) {
+		Log.d("APP", "POSITION: " + position);
+		Log.d("APP", "COUNT: " + getCount());
        	if (position == getCount()-1){
 				return 0;
 		}
@@ -73,7 +76,7 @@ public class ThreadAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 		final int pos = position;
-		
+		Log.d("APP", position + "");
 		if (v == null){
 			LayoutInflater li = LayoutInflater.from(con);
 			switch (getItemViewType(position)) {

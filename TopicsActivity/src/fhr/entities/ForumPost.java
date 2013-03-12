@@ -3,6 +3,7 @@ package fhr.entities;
 public class ForumPost {
 
 	private String postAuthor;
+	private String postAuthorUri;
 	private String postDate;
 	private String postText;
 	private String postHtml;
@@ -41,6 +42,13 @@ public class ForumPost {
 	}
 	public void setPostAuthorAvatarPath(String postAuthorAvatarPath) {
 		this.postAuthorAvatarPath = postAuthorAvatarPath;
+	}
+	
+	public String getPostAuthorUri() {
+		return postAuthorUri;
+	}
+	public void setPostAuthorUri(String postAuthorUri) {
+		this.postAuthorUri = postAuthorUri;
 	}
 
 	

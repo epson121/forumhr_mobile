@@ -58,6 +58,9 @@ public class ForumPostParser {
 			else
 				fp.setPostAuthor(" ");
 			
+			Element author = secondTR.select("a[class=bigusername]").get(0);
+			fp.setPostAuthorUri("www.forum.hr/" + author.attr("href"));
+			
 			//get author avatar url 
 			String avatarUrl = secondTR.select("div[class=smallfont]").select("img").attr("src");
 			if (avatarUrl.equals(null))

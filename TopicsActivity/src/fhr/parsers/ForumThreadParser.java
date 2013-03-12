@@ -12,6 +12,7 @@ public class ForumThreadParser {
 
 	private Document doc;
 	private Elements  threadList;
+	private int c = 1;
 	
 	public ForumThreadParser(String url){
 		try{
@@ -31,11 +32,11 @@ public class ForumThreadParser {
 	}
 	
 	public int getCount(){
-		return threadList.size() - 1;
+		return threadList.size() - c;
 	}
 	
 	public ForumThread[] getThreadList(){
-		ForumThread thList[] = new ForumThread[getCount()];
+		
 		int threadId = 0;
 		String[] thId;
 		Elements anchors, divTags, hrefs, lastPInfo, thAuthor;
@@ -44,10 +45,19 @@ public class ForumThreadParser {
 		//get number of pages in topic
 		ForumThread.TopicNumOfPages = doc.select("div[class=pagenav]").select("td[class=vbmenu_control]").get(0).text().split("od ")[1];
 		
+		for (Element e2: threadList){
+			if (!e2.select("img[alt=Najava/obavijest]").isEmpty())
+				c += 1;
+			else
+				break;
+		}
+		
+		ForumThread thList[] = new ForumThread[getCount()];
+		
 		for (Element e : threadList){
 			ForumThread thread = new ForumThread();
 			//first element is not a thread
-			if (counter > 0){
+			if (counter > c){
 				//get thread id
 				thId = e.child(0).attr("id").split("_");
 				if (!thId[2].equals("")){
